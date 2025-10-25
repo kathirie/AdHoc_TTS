@@ -1,0 +1,6 @@
+@AdHoc_SpeechSynthesizer_HostAddress = http://localhost:5032
+
+GET {{AdHoc_SpeechSynthesizer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
