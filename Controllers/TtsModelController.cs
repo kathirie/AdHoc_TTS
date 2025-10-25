@@ -1,8 +1,6 @@
-﻿using AdHoc_SpeechSynthesizer.Data;
-using AdHoc_SpeechSynthesizer.Models;
+﻿using AdHoc_SpeechSynthesizer.Models;
+using AdHoc_SpeechSynthesizer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
 
 namespace AdHoc_SpeechSynthesizer.Controllers
 {
@@ -10,74 +8,55 @@ namespace AdHoc_SpeechSynthesizer.Controllers
     [Route("api/ttsmodels")]
     public class TtsModelController : ControllerBase
     {
-        private readonly AppDbContext _db;
+        private readonly ITtsModelService _service;
 
-        public TtsModelController(AppDbContext db)
+        public TtsModelController(ITtsModelService service)
         {
-            _db = db;
+            _service = service;
         }
 
-        // GET: api/TtsModel
+        // GET: api/models
         [HttpGet]
         public async Task<IActionResult> GetAllModels()
         {
-            var models = await _db.TtsModels
-                .AsNoTracking()
-                .ToListAsync();
-
+            var models = await _service.GetAllAsync();
             return Ok(models);
         }
 
-        // GET: api/TtsModel/{id}
+        // GET: api/models/{id}
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetModel(Guid id)
         {
-            var model = await _db.TtsModels.FindAsync(id);
-            if (model is null) return NotFound();
-            return Ok(model);
+            var model = await _service.GetByIdAsync(id);
+            return model is null ? NotFound() : Ok(model);
         }
 
-        // POST: api/TtsModel
+        // POST: api/models
         [HttpPost]
         public async Task<IActionResult> CreateModel([FromBody] TtsModel model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            model.ModelId = Guid.NewGuid();
-            model.CreatedAt = DateTime.UtcNow;
-            model.UpdatedAt = DateTime.UtcNow;
-
-            _db.TtsModels.Add(model);
-            await _db.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetModel), new { id = model.ModelId }, model);
+            var created = await _service.CreateAsync(model);
+            return CreatedAtAction(nameof(GetModel), new { id = created.ModelId }, created);
         }
 
-        // PUT: api/TtsModel/{id}
+        // PUT: api/models/{id}
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> UpdateModel(Guid id, [FromBody] TtsModel updated)
         {
-            var model = await _db.TtsModels.FindAsync(id);
-            if (model is null) return NotFound();
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            model.Name = updated.Name;
-            model.Provider = updated.Provider;
-            model.UpdatedAt = DateTime.UtcNow;
-
-            await _db.SaveChangesAsync();
-            return NoContent();
+            var success = await _service.UpdateAsync(id, updated);
+            return success ? NoContent() : NotFound();
         }
 
-        // DELETE: api/TtsModel/{id}
+        // DELETE: api/models/{id}
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteModel(Guid id)
         {
-            var model = await _db.TtsModels.FindAsync(id);
-            if (model is null) return NotFound();
-
-            _db.TtsModels.Remove(model);
-            await _db.SaveChangesAsync();
-            return NoContent();
+            var success = await _service.DeleteAsync(id);
+            return success ? NoContent() : NotFound();
         }
     }
 }
