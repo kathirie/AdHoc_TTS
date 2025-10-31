@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Speech Synthesizer Test</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 40px;
+            max-width: 600px;
+        }
+
+        select, input, button, textarea {
+            width: 100%;
+            margin-top: 10px;
+            padding: 6px;
+        }
+
+        audio {
+            margin-top: 20px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Speech Synthesizer Test</h1>
+
+    <label>1️ Select SSML File:</label>
+    <input type="file" id="ssmlFile" accept=".xml,.ssml" />
+
+    <label>2️ Select Model:</label>
+    <select id="modelSelect"></select>
+
+    <label>3️ Select Voice:</label>
+    <select id="voiceSelect"></select>
+
+    <button id="synthesizeBtn">Synthesize</button>
+
+    <audio id="audioPlayer" controls></audio>
+
+    <script>
+        const baseUrl = "https://localhost:7275/api";
+        const modelSelect = document.getElementById("modelSelect");
+        const voiceSelect = document.getElementById("voiceSelect");
+        const ssmlFile = document.getElementById("ssmlFile");
+        const synthesizeBtn = document.getElementById("synthesizeBtn");
+        const audioPlayer = document.getElementById("audioPlayer");
+
+        // Load models on startup
+        async function loadModels() {
+            const res = await fetch(`${baseUrl}/TtsModels`);
+            const models = await res.json();
+            modelSelect.innerHTML = "<option value=''>-- select a model --</option>" +
+                models.map(m => `<option value="${m.modelId}">${m.name} (${m.provider})</option>`).join("");
+        }
+
+        // Load voices when a model is selected
+        modelSelect.addEventListener("change", async () => {
+            const modelId = modelSelect.value;
+            if (!modelId) return;
+            const res = await fetch(`${baseUrl}/TtsModels/${modelId}/voices`);
+            const voices = await res.json();
+            voiceSelect.innerHTML = voices.length === 0
+                ? "<option value=''>-- no voices found --</option>"
+                : voices.map(v => `<option value="${v.voiceId}">${v.displayName} (${v.locale})</option>`).join("");
+        });
+
+        // Handle Synthesize
+        synthesizeBtn.addEventListener("click", async () => {
+            const modelId = modelSelect.value;
+            const voiceId = voiceSelect.value || null;
+            const file = ssmlFile.files[0];
+
+            if (!file || !modelId) {
+                alert("Please select a file and a model first.");
+                return;
+            }
+
+            const ssmlContent = await file.text();
+
+            const reqBody = { ssmlContent, modelId, voiceId };
+
+            const res = await fetch(`${baseUrl}/Synthesis`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(reqBody)
+            });
+
+            if (!res.ok) {
+                alert("Error: " + res.statusText);
+                return;
+            }
+
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            audioPlayer.src = url;
+            audioPlayer.play();
+        });
+
+        loadModels();
+    </script>
+</body>
+</html>

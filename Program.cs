@@ -1,6 +1,7 @@
 using AdHoc_SpeechSynthesizer.Data;
 using AdHoc_SpeechSynthesizer.Services;
 using AdHoc_SpeechSynthesizer.Services.Interfaces;
+using AdHoc_SpeechSynthesizer.Services.Synthesizers;
 using Microsoft.EntityFrameworkCore;
 using System.Speech.Synthesis;
 
@@ -18,6 +19,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<ITtsModelService, TtsModelService>();
 builder.Services.AddScoped<ITtsVoiceService, TtsVoiceService>();
+builder.Services.AddScoped<ISynthesisService, SynthesisService>();
 
 
 var app = builder.Build();
@@ -36,6 +38,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseStaticFiles();
 
 app.MapControllers();
 

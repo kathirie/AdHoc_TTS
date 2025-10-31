@@ -1,6 +1,49 @@
 @AdHoc_SpeechSynthesizer_HostAddress = http://localhost:5032
 
-GET {{AdHoc_SpeechSynthesizer_HostAddress}}/weatherforecast/
+
+### Get all available TTS models
+GET https://localhost:7275/api/TtsModels
 Accept: application/json
 
 ###
+
+### Get all available voices
+GET https://localhost:7275/api/TtsVoices
+Accept: application/json
+
+###
+
+### Get voices for Windows
+GET https://localhost:7275/api/TtsModels/7594b8ed-4a63-4fe7-92e4-214a82898292/voices
+Accept: application/json
+
+### Get voices for Azure
+GET https://localhost:7275/api/TtsModels/3f65f9fc-ea33-4696-955f-14bf92b8c31e/voices
+Accept: application/json
+
+###
+
+### Synthesize speech (Azure or System.Speech)
+POST https://localhost:7275/api/Synthesis
+Content-Type: application/json
+Accept: audio/wav
+
+{
+  "ssmlContent": "<speak version='1.0' xml:lang='de-DE'><voice name='de-DE-KatjaNeural'>Hallo Welt, dies ist ein Test!</voice></speak>",
+  "modelId": "00000000-0000-0000-0000-000000000000",
+  "voiceId": null
+}
+
+###
+
+### Test with a specific voice (replace with a real ID)
+POST https://localhost:7275/api/Synthesis
+Content-Type: application/json
+Accept: audio/wav
+
+{
+  "ssmlContent": "<speak version='1.0' xml:lang='de-DE'><voice name='de-DE-ConradNeural'>Guten Tag! Wie geht es Ihnen?</voice></speak>",
+  "modelId": "00000000-0000-0000-0000-000000000000",
+  "voiceId": "630e68a1-10dc-4cea-ac37-5c6bfa928d86"
+}
+
