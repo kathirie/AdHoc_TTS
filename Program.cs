@@ -5,6 +5,8 @@ using AdHoc_SpeechSynthesizer.Services.Synthesizers;
 using Microsoft.EntityFrameworkCore;
 using System.Speech.Synthesis;
 
+// https://localhost:7275/synthesize.html
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -20,6 +22,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<ITtsModelService, TtsModelService>();
 builder.Services.AddScoped<ITtsVoiceService, TtsVoiceService>();
 builder.Services.AddScoped<ISynthesisService, SynthesisService>();
+builder.Services.AddScoped<IMessageTemplateService, MessageTemplateService>();
 
 
 var app = builder.Build();
@@ -28,6 +31,7 @@ var app = builder.Build();
 
 await TtsModelSeeder.SeedAsync(app.Services);
 await TtsVoiceSeeder.SeedAsync(app.Services);
+await MessageTemplateSeeder.SeedAsync(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -9,6 +9,7 @@ namespace AdHoc_SpeechSynthesizer.Data
 
         public DbSet<TtsModel> TtsModels => Set<TtsModel>();
         public DbSet<TtsVoice> TtsVoices => Set<TtsVoice>();
+        public DbSet<MessageTemplate> MessageTemplates => Set<MessageTemplate>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,6 +34,15 @@ namespace AdHoc_SpeechSynthesizer.Data
                       .WithMany(x => x.Voices)
                       .HasForeignKey(x => x.ModelId)
                       .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<MessageTemplate>(entity =>
+            {
+                entity.ToTable("MessageTemplate", schema: "dbo");
+                entity.HasKey(x => x.TemplateId);
+                entity.Property(x => x.Name).HasMaxLength(200).IsRequired();
+                entity.Property(x => x.Description).HasMaxLength(500);
+                entity.Property(x => x.SSMLContent).HasMaxLength(500).IsRequired();
             });
         }
     }
