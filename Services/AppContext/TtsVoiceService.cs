@@ -1,8 +1,10 @@
-﻿// Services/TtsVoiceService.cs
-using AdHoc_SpeechSynthesizer.Data;
-using AdHoc_SpeechSynthesizer.Models;
-using AdHoc_SpeechSynthesizer.Services.Interfaces;
+﻿using AdHoc_SpeechSynthesizer.Data;
+using AdHoc_SpeechSynthesizer.Models.AppContext;
+using AdHoc_SpeechSynthesizer.Services.Interfaces.AppContext;
 using Microsoft.EntityFrameworkCore;
+
+
+namespace AdHoc_SpeechSynthesizer.Services.AppContext;
 
 public class TtsVoiceService : ITtsVoiceService
 {

@@ -14,11 +14,11 @@ Accept: application/json
 ###
 
 ### Get voices for Windows
-GET https://localhost:7275/api/TtsModels/7594b8ed-4a63-4fe7-92e4-214a82898292/voices
+GET https://localhost:7275/api/TtsModels/D229008E-A9B5-410C-B794-274763DACA4E/voices
 Accept: application/json
 
 ### Get voices for Azure
-GET https://localhost:7275/api/TtsModels/3f65f9fc-ea33-4696-955f-14bf92b8c31e/voices
+GET https://localhost:7275/api/TtsModels/7FF02809-B650-45C1-B4A8-3DE02DAEBC1C/voices
 Accept: application/json
 
 ###
@@ -30,7 +30,7 @@ Accept: audio/wav
 
 {
   "ssmlContent": "<speak version='1.0' xml:lang='de-DE'><voice name='de-DE-KatjaNeural'>Hallo Welt, dies ist ein Test!</voice></speak>",
-  "modelId": "00000000-0000-0000-0000-000000000000",
+  "modelId": "D229008E-A9B5-410C-B794-274763DACA4E",
   "voiceId": null
 }
 
@@ -43,7 +43,51 @@ Accept: audio/wav
 
 {
   "ssmlContent": "<speak version='1.0' xml:lang='de-DE'><voice name='de-DE-ConradNeural'>Guten Tag! Wie geht es Ihnen?</voice></speak>",
-  "modelId": "00000000-0000-0000-0000-000000000000",
-  "voiceId": "630e68a1-10dc-4cea-ac37-5c6bfa928d86"
+  "modelId": "D229008E-A9B5-410C-B794-274763DACA4E",
+  "voiceId": "5ECC5FE8-5D2D-4B82-AE2D-B974179B7167"
 }
 
+
+### Get all locations
+GET https://localhost:7275/api/Location
+Accept: application/json
+
+### Get all locations in one control center
+GET https://localhost:7275/api/Location?controlCenterId=BLA
+Accept: application/json
+
+### Get single location
+GET https://localhost:7275/api/Location/BLA/2093/1/136
+Accept: application/json
+
+
+### all platforms for a location
+GET https://localhost:7275/api/Platform/location/CC01/1/10/123
+Accept: application/json
+
+### single platform
+GET https://localhost:7275/api/Platform/CC01/1/10/123/2
+Accept: application/json
+
+
+### All routes
+GET https://localhost:7275/api/Route
+
+### Filtered
+GET https://localhost:7275/api/Route?controlCenterId=BLA&routeNr=120
+
+### Single route by key
+GET https://localhost:7275/api/Route/BLA/2093/120/1
+
+
+### Get all target texts
+GET https://localhost:7275/api/TargetText
+Accept: application/json
+
+### Filter by control center
+GET https://localhost:7275/api/TargetText?controlCenterId=BLA
+Accept: application/json
+
+### Get single target text
+GET https://localhost:7275/api/TargetText/BLA/2093/6
+Accept: application/json

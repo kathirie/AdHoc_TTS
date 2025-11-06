@@ -1,9 +1,9 @@
-﻿// Controllers/TtsVoiceController.cs
-using AdHoc_SpeechSynthesizer.Data;
-using AdHoc_SpeechSynthesizer.Services.Interfaces;
+﻿using AdHoc_SpeechSynthesizer.Data;
+using AdHoc_SpeechSynthesizer.Services.Interfaces.AppContext;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+namespace AdHoc_SpeechSynthesizer.Controllers.AppContext;
 
 [ApiController]
 [Route("api/ttsvoices")]

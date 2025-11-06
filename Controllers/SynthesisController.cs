@@ -2,31 +2,30 @@
 using AdHoc_SpeechSynthesizer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AdHoc_SpeechSynthesizer.Controllers
+namespace AdHoc_SpeechSynthesizer.Controllers;
+
+[ApiController]
+[Route("api/synthesis")]
+public class SynthesisController : ControllerBase
 {
-    [ApiController]
-    [Route("api/synthesis")]
-    public class SynthesisController : ControllerBase
+    private readonly ISynthesisService _service;
+
+    public SynthesisController(ISynthesisService service)
     {
-        private readonly ISynthesisService _service;
+        _service = service;
+    }
 
-        public SynthesisController(ISynthesisService service)
+    [HttpPost]
+    public async Task<IActionResult> Synthesize([FromBody] SynthesisRequest request)
+    {
+        try
         {
-            _service = service;
+            var wavBytes = await _service.SynthesizeAsync(request);
+            return File(wavBytes, "audio/wav", "output.wav");
         }
-
-        [HttpPost]
-        public async Task<IActionResult> Synthesize([FromBody] SynthesisRequest request)
+        catch (Exception ex)
         {
-            try
-            {
-                var wavBytes = await _service.SynthesizeAsync(request);
-                return File(wavBytes, "audio/wav", "output.wav");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { error = ex.Message });
-            }
+            return BadRequest(new { error = ex.Message });
         }
     }
 }

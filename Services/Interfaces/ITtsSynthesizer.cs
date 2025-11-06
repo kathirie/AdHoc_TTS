@@ -1,7 +1,6 @@
-﻿namespace AdHoc_SpeechSynthesizer.Services.Synthesizers
+﻿namespace AdHoc_SpeechSynthesizer.Services.Synthesizers;
+
+public interface ITtsSynthesizer : IDisposable
 {
-    public interface ITtsSynthesizer : IDisposable
-    {
-        Task<byte[]> SynthesizeToWavAsync(string ssmlContent);
-    }
+    Task<byte[]> SynthesizeToWavAsync(string ssmlContent);
 }
