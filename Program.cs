@@ -1,4 +1,5 @@
 using AdHoc_SpeechSynthesizer.Data;
+using AdHoc_SpeechSynthesizer.Helpers.Validation;
 using AdHoc_SpeechSynthesizer.Services;
 using AdHoc_SpeechSynthesizer.Services.AppContext;
 using AdHoc_SpeechSynthesizer.Services.CompanyContext;
@@ -14,7 +15,6 @@ using System.Speech.Synthesis;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -26,6 +26,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddDbContext<CompanyDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CompanyConnection")));
+
+builder.Services.AddSingleton<SsmlValidator>();
 
 builder.Services.AddScoped<ITtsModelService, TtsModelService>();
 builder.Services.AddScoped<ITtsVoiceService, TtsVoiceService>();

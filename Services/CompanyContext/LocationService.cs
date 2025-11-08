@@ -14,6 +14,17 @@ namespace AdHoc_SpeechSynthesizer.Services.CompanyContext
             _db = db;
         }
 
+        public async Task<List<string>> GetAllRefLocationNamesAsync()
+        {
+            return await _db.Locations
+                .AsNoTracking()
+                .Where(l => l.RefLocationName != null && l.RefLocationName != "")
+                .Select(l => l.RefLocationName!)
+                .Distinct()
+                .OrderBy(name => name)
+                .ToListAsync();
+        }
+
         public async Task<List<Location>> GetAllAsync(string? controlCenterId = null, int? locationTypeNr = null)
         {
             var query = _db.Locations.AsNoTracking().AsQueryable();

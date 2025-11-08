@@ -4,13 +4,12 @@ namespace AdHoc_SpeechSynthesizer.Services.Interfaces.CompanyContext;
 
 public interface ITargetTextService
 {
-    /// <summary>
-    /// Returns all target texts, optionally filtered by control center.
-    /// </summary>
+    // Returns all FrontTexts.
+    Task<List<string>> GetAllFrontTextsAsync();
+
+    // Returns all target texts, optionally filtered by control center.
     Task<List<TargetText>> GetAllAsync(string? controlCenterId = null);
 
-    /// <summary>
-    /// Returns a specific target text by composite key.
-    /// </summary>
+    // Returns a specific target text by composite key.
     Task<TargetText?> GetByKeyAsync(string controlCenterId, int versionNr, int targetTextNr);
 }

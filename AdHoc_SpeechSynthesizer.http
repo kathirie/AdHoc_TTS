@@ -23,8 +23,8 @@ Accept: application/json
 
 ###
 
-### Synthesize speech (Azure or System.Speech)
-POST https://localhost:7275/api/Synthesis
+### Synthesize speech (System.Speech)
+POST https://localhost:7275/api/Synthesis/from-ssml
 Content-Type: application/json
 Accept: audio/wav
 
@@ -34,10 +34,88 @@ Accept: audio/wav
   "voiceId": null
 }
 
-###
+### Synthesize speech with Azure specific content
+POST https://localhost:7275/api/Synthesis/from-ssml
+Content-Type: application/json
+Accept: audio/wav
 
-### Test with a specific voice (replace with a real ID)
-POST https://localhost:7275/api/Synthesis
+{
+  "ssmlContent": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\"><voice name=\"en-US-AvaNeural\" mstts:visemeType=\"FacialExpression\"><mstts:express-as style=\"cheerful\">This should still pass validation although it uses Azure-specific tags.</mstts:express-as></voice></speak>",
+  "modelId": "D229008E-A9B5-410C-B794-274763DACA4E",
+  "voiceId": null
+}
+
+### Synthesize speech with invalid ssml (missing voice name attribute)
+POST https://localhost:7275/api/Synthesis/from-ssml
+Content-Type: application/json
+Accept: audio/wav
+
+{
+  "ssmlContent": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\"><voice>Oops, no name attribute here.</voice></speak>",
+  "modelId": "D229008E-A9B5-410C-B794-274763DACA4E",
+  "voiceId": null
+}
+
+### Synthesize speech with invalid ssml (missing voice element)
+POST https://localhost:7275/api/Synthesis/from-ssml
+Content-Type: application/json
+Accept: audio/wav
+
+{
+  "ssmlContent": "<speak xmlns=\"http://www.w3.org/2001/10/synthesis\">This SSML is missing a voice element.</speak>",
+  "modelId": "D229008E-A9B5-410C-B794-274763DACA4E",
+  "voiceId": null
+}
+
+### Synthesize speech with invalid ssml (speak is not root element)
+POST https://localhost:7275/api/Synthesis/from-ssml
+Content-Type: application/json
+Accept: audio/wav
+
+{
+  "ssmlContent": "<div xmlns=\"http://www.w3.org/2001/10/synthesis\"><voice name=\"en-US-AvaNeural\">Wrong root element.</voice></div>",
+  "modelId": "D229008E-A9B5-410C-B794-274763DACA4E",
+  "voiceId": null
+}
+
+
+### Synthesize speech with invalid ssml (not well-formed)
+POST https://localhost:7275/api/Synthesis/from-ssml
+Content-Type: application/json
+Accept: audio/wav
+
+{
+  "ssmlContent": "<speak xmlns=\"http://www.w3.org/2001/10/synthesis\"><voice name=\"en-US-AvaNeural\">This tag never closes</speak>",
+  "modelId": "D229008E-A9B5-410C-B794-274763DACA4E",
+  "voiceId": null
+}
+
+### Synthesize speech with invalid ssml (placeholder not replaced)
+POST https://localhost:7275/api/Synthesis/from-ssml
+Content-Type: application/json
+Accept: audio/wav
+
+{
+  "ssmlContent": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\"><voice name=\"en-US-AvaNeural\">This tag never closes</speak>",
+  "modelId": "D229008E-A9B5-410C-B794-274763DACA4E",
+  "voiceId": null
+}
+
+### Synthesize speech with invalid ssml (placeholder not replaced)
+POST https://localhost:7275/api/Synthesis/from-ssml
+Content-Type: application/json
+Accept: audio/wav
+  
+{
+  "ssmlContent": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"><voice name=\"en-US-AvaNeural\">Hello <break time=\"1s\"></voice> World!</break></speak>",
+  "modelId": "D229008E-A9B5-410C-B794-274763DACA4E",
+  "voiceId": null
+}
+
+
+
+### Test with a specific voice
+POST https://localhost:7275/api/Synthesis/from-ssml
 Content-Type: application/json
 Accept: audio/wav
 
@@ -47,9 +125,35 @@ Accept: audio/wav
   "voiceId": "5ECC5FE8-5D2D-4B82-AE2D-B974179B7167"
 }
 
+### Get all available message templates
+GET https://localhost:7275/api/messagetemplates
+Accept: application/json
+
+
+### Synthesize speech from a template
+POST https://localhost:7275/api/synthesis/from-template
+Content-Type: application/json
+
+{
+  "templateId": "02e6224f-b912-49e4-8ea4-5b408e21c6d8",
+  "modelId": "d229008e-a9b5-410c-b794-274763daca4e",
+  "voiceId": null,
+  "refLocationName": null,
+  "platformName": null,
+  "routeNr": 27,
+  "frontText": null,
+  "freeText": "technischen Störungen"
+}
+
+
+
 
 ### Get all locations
 GET https://localhost:7275/api/Location
+Accept: application/json
+
+### Get all RefLocationNames
+GET https://localhost:7275/api/Location/RefLocationNames
 Accept: application/json
 
 ### Get all locations in one control center
@@ -61,6 +165,13 @@ GET https://localhost:7275/api/Location/BLA/2093/1/136
 Accept: application/json
 
 
+
+
+
+### all platforms names
+GET https://localhost:7275/api/Platform/names
+Accept: application/json
+
 ### all platforms for a location
 GET https://localhost:7275/api/Platform/location/CC01/1/10/123
 Accept: application/json
@@ -70,8 +181,14 @@ GET https://localhost:7275/api/Platform/CC01/1/10/123/2
 Accept: application/json
 
 
+
+
+
 ### All routes
 GET https://localhost:7275/api/Route
+
+### All RouteNrs
+GET https://localhost:7275/api/Route/RouteNrs
 
 ### Filtered
 GET https://localhost:7275/api/Route?controlCenterId=BLA&routeNr=120
@@ -80,8 +197,14 @@ GET https://localhost:7275/api/Route?controlCenterId=BLA&routeNr=120
 GET https://localhost:7275/api/Route/BLA/2093/120/1
 
 
+
+
 ### Get all target texts
 GET https://localhost:7275/api/TargetText
+Accept: application/json
+
+### Get all target text FrontTexts
+GET https://localhost:7275/api/TargetText/fronttexts
 Accept: application/json
 
 ### Filter by control center

@@ -15,12 +15,28 @@ public class SynthesisController : ControllerBase
         _service = service;
     }
 
-    [HttpPost]
+    // 1) SSML -> WAV
+    [HttpPost("from-ssml")]
     public async Task<IActionResult> Synthesize([FromBody] SynthesisRequest request)
     {
         try
         {
             var wavBytes = await _service.SynthesizeAsync(request);
+            return File(wavBytes, "audio/wav", "output.wav");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+    }
+
+    // 2) Template + Data -> SSML -> WAV
+    [HttpPost("from-template")]
+    public async Task<IActionResult> SynthesizeFromTemplate([FromBody] SynthesizeFromTemplateRequest request)
+    {
+        try
+        {
+            var wavBytes = await _service.SynthesizeFromTemplateAsync(request);
             return File(wavBytes, "audio/wav", "output.wav");
         }
         catch (Exception ex)

@@ -14,6 +14,17 @@ public class TargetTextService : ITargetTextService
         _db = db;
     }
 
+    public async Task<List<string>> GetAllFrontTextsAsync()
+    {
+        return await _db.TargetTexts
+            .AsNoTracking()
+            .Where(t => t.FrontText != null && t.FrontText != "")
+            .Select(t => t.FrontText!)
+            .Distinct()
+            .OrderBy(text => text)
+            .ToListAsync();
+    }
+
     public async Task<List<TargetText>> GetAllAsync(string? controlCenterId = null)
     {
         var query = _db.TargetTexts.AsNoTracking().AsQueryable();

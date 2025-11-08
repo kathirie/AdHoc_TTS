@@ -42,7 +42,7 @@ public class AppDbContext : DbContext
             entity.HasKey(x => x.TemplateId);
             entity.Property(x => x.Name).HasMaxLength(200).IsRequired();
             entity.Property(x => x.Description).HasMaxLength(500);
-            entity.Property(x => x.SSMLContent).HasMaxLength(500).IsRequired();
+            entity.Property(x => x.SsmlContent).HasMaxLength(500).IsRequired();
         });
     }
 }

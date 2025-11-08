@@ -1,4 +1,5 @@
-﻿using AdHoc_SpeechSynthesizer.Services.Interfaces.CompanyContext;
+﻿using AdHoc_SpeechSynthesizer.Services.CompanyContext;
+using AdHoc_SpeechSynthesizer.Services.Interfaces.CompanyContext;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdHoc_SpeechSynthesizer.Controllers.CompanyContext;
@@ -12,6 +13,14 @@ public class PlatformController : ControllerBase
     public PlatformController(IPlatformService service)
     {
         _service = service;
+    }
+
+    // GET /api/platforms/names
+    [HttpGet("names")]
+    public async Task<IActionResult> GetAllPlatformNames()
+    {
+        var names = await _service.GetAllPlatformNamesAsync();
+        return Ok(names);
     }
 
     // GET: api/Platform?controlCenterId=CC01&locationTypeNr=5&locationNr=123

@@ -74,7 +74,8 @@ public static class TtsVoiceSeeder
 
         using var conn = new SqlConnection(connectionString);
 
-        // Get the ModelId for Azure TTS
+        // Get the
+        // for Azure TTS
         var modelId = await conn.ExecuteScalarAsync<Guid?>(
             $"SELECT ModelId FROM [{schema}].[TtsModel] WHERE Provider = @p",
             new { p = "azure" });

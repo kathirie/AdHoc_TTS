@@ -8,5 +8,5 @@ public class MessageTemplate
 
     public string? Description { get; set; } = default!;
 
-    public string SSMLContent { get; set; } = default!;
+    public string SsmlContent { get; set; } = default!;
 }

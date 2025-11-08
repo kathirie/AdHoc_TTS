@@ -27,9 +27,9 @@ public static class MessageTemplateSeeder
                 )
                 BEGIN
                     INSERT INTO [{schema}].[MessageTemplate]
-                        (TemplateId, Name, Description, SSMLContent)
+                        (TemplateId, Name, Description, SsmlContent)
                     VALUES
-                        (NEWID(), @Name, @Description, @SSMLContent)
+                        (NEWID(), @Name, @Description, @SsmlContent)
                 END";
 
         // Beispiel 1: Baustelle

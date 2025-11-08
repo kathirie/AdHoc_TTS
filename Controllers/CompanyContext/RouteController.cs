@@ -1,4 +1,5 @@
-﻿using AdHoc_SpeechSynthesizer.Services.Interfaces.CompanyContext;
+﻿using AdHoc_SpeechSynthesizer.Services.CompanyContext;
+using AdHoc_SpeechSynthesizer.Services.Interfaces.CompanyContext;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdHoc_SpeechSynthesizer.Controllers.CompanyContext;
@@ -13,6 +14,14 @@ namespace AdHoc_SpeechSynthesizer.Controllers.CompanyContext;
         public RouteController(IRouteService service)
         {
             _service = service;
+        }
+
+        // GET /api/routes/RouteNrs
+        [HttpGet("RouteNrs")]
+        public async Task<IActionResult> GetAllRouteNumbers()
+        {
+            var routeNumbers = await _service.GetAllRouteNumbersAsync();
+            return Ok(routeNumbers);
         }
 
         // GET: api/Route?controlCenterId=CC01&routeNr=10&routeVariant=A

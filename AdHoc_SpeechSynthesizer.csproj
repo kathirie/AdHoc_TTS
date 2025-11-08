@@ -10,6 +10,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Schemas\ssml-synthesis.xsd" />
+    <None Remove="Schemas\synthesis-core.xsd" />
+    <None Remove="Schemas\xml.xsd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Schemas\ssml-synthesis.xsd" />
+    <EmbeddedResource Include="Schemas\synthesis-core.xsd" />
+    <EmbeddedResource Include="Schemas\xml.xsd" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9" />
     <PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.46.0" />

@@ -14,6 +14,16 @@ public class RouteService : IRouteService
         _db = db;
     }
 
+    public async Task<List<int>> GetAllRouteNumbersAsync()
+    {
+        return await _db.Routes
+            .AsNoTracking()
+            .Select(r => r.RouteNr)
+            .Distinct()
+            .OrderBy(nr => nr)
+            .ToListAsync();
+    }
+
     public async Task<List<AdHoc_SpeechSynthesizer.Models.CompanyContext.Route>> GetAllAsync(
         string? controlCenterId = null,
         int? routeNr = null,

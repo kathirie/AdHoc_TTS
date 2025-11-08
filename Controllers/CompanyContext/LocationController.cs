@@ -1,4 +1,5 @@
-﻿using AdHoc_SpeechSynthesizer.Services.Interfaces.CompanyContext;
+﻿using AdHoc_SpeechSynthesizer.Services.CompanyContext;
+using AdHoc_SpeechSynthesizer.Services.Interfaces.CompanyContext;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdHoc_SpeechSynthesizer.Controllers.CompanyContext;
@@ -13,6 +14,14 @@ namespace AdHoc_SpeechSynthesizer.Controllers.CompanyContext;
         public LocationController(ILocationService service)
         {
             _service = service;
+        }
+
+        // GET: api/Location/RefLocationNames
+        [HttpGet("RefLocationNames")]
+        public async Task<IActionResult> GetAllRefLocationNames()
+        {
+            var names = await _service.GetAllRefLocationNamesAsync();
+            return Ok(names);
         }
 
         // GET: api/Location?controlCenterId=CC01&locationTypeNr=5
@@ -36,5 +45,6 @@ namespace AdHoc_SpeechSynthesizer.Controllers.CompanyContext;
             var location = await _service.GetByKeyAsync(controlCenterId, versionNr, locationTypeNr, locationNr);
             return location is null ? NotFound() : Ok(location);
         }
-    }
+
+}
 

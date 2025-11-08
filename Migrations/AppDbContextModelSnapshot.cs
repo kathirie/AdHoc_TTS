@@ -37,7 +37,7 @@ namespace AdHoc_SpeechSynthesizer.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("SSMLContent")
+                    b.Property<string>("SsmlContent")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");

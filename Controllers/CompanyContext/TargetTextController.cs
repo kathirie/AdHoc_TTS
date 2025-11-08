@@ -1,4 +1,5 @@
-﻿using AdHoc_SpeechSynthesizer.Services.Interfaces.CompanyContext;
+﻿using AdHoc_SpeechSynthesizer.Services.CompanyContext;
+using AdHoc_SpeechSynthesizer.Services.Interfaces.CompanyContext;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdHoc_SpeechSynthesizer.Controllers.CompanyContext;
@@ -12,6 +13,14 @@ public class TargetTextController : ControllerBase
     public TargetTextController(ITargetTextService service)
     {
         _service = service;
+    }
+
+    // GET /api/targettexts/fronttexts
+    [HttpGet("fronttexts")]
+    public async Task<IActionResult> GetAllFrontTexts()
+    {
+        var frontTexts = await _service.GetAllFrontTextsAsync();
+        return Ok(frontTexts);
     }
 
     // GET: api/TargetText?controlCenterId=CC01
