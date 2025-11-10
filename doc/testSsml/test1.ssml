@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-JonasNeural">
+    <p>
+      <s>Nächster Halt: Linz Hauptbahnhof.</s><break time="400ms"/>
+      <s>Sie haben Anschluss zu den Linien
+          1<break time="300ms"/>,
+          2<break time="300ms"/>
+          und 43</s>
+    </p>
+  </voice>
+</speak>
+
+
+

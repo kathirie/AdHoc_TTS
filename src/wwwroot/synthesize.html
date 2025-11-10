@@ -1,0 +1,365 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Speech Synthesizer Test</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 40px;
+            max-width: 900px;
+        }
+
+        h1, h2 {
+            margin-top: 0;
+        }
+
+        section {
+            border: 1px solid #ccc;
+            padding: 16px;
+            margin-bottom: 24px;
+            border-radius: 8px;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-top: 12px;
+        }
+
+        select, input, button, textarea {
+            width: 100%;
+            margin-top: 6px;
+            padding: 6px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            font-family: monospace;
+            white-space: pre-wrap; 
+            word-wrap: break-word;
+        }
+
+        audio {
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        small {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Speech Synthesizer Test</h1>
+
+    <section>
+        <h2>1. TTS Model</h2>
+
+        <label for="modelSelect">Select Model:</label>
+        <select id="modelSelect"></select>
+    </section>
+
+    <section>
+        <h2>2. Synthesize from SSML File</h2>
+
+        <label for="ssmlFile">Select SSML File:</label>
+        <input type="file" id="ssmlFile" accept=".xml,.ssml" />
+
+        <button id="synthesizeFileBtn">Synthesize from File</button>
+    </section>
+
+    <section>
+        <h2>3. Synthesize from Template</h2>
+
+        <label for="templateSelect">Template:</label>
+        <select id="templateSelect">
+            <option value="">-- select a template --</option>
+        </select>
+
+        <label for="templateDescription">Description:</label>
+        <textarea id="templateDescription" rows="3" readonly></textarea>
+
+        <hr />
+
+        <label for="locationSelect">Location (RefLocationName):</label>
+        <select id="locationSelect">
+            <option value="">-- optional: select location --</option>
+        </select>
+
+        <label for="platformSelect">Platform (Name):</label>
+        <select id="platformSelect">
+            <option value="">-- optional: select platform --</option>
+        </select>
+
+        <label for="routeSelect">Route (RouteNr):</label>
+        <select id="routeSelect">
+            <option value="">-- optional: select route --</option>
+        </select>
+
+        <label for="frontTextSelect">FrontText (TargetText.FrontText):</label>
+        <select id="frontTextSelect">
+            <option value="">-- optional: select front text --</option>
+        </select>
+
+        <label for="freeTextInput">Free text (Freitext, optional):</label>
+        <input type="text" id="freeTextInput" placeholder="e.g. technischen Störungen" />
+
+        <button id="synthesizeTemplateBtn">Synthesize from Template</button>
+    </section>
+
+    <section>
+        <h2>4. Result</h2>
+        <audio id="audioPlayer" controls></audio>
+    </section>
+
+    <script>
+        const baseUrl = "https://localhost:7275/api";
+
+        const modelSelect = document.getElementById("modelSelect");
+        const ssmlFile = document.getElementById("ssmlFile");
+        const synthesizeFileBtn = document.getElementById("synthesizeFileBtn");
+        const synthesizeTemplateBtn = document.getElementById("synthesizeTemplateBtn");
+        const audioPlayer = document.getElementById("audioPlayer");
+
+        const templateSelect = document.getElementById("templateSelect");
+        const templateDescription = document.getElementById("templateDescription");
+        const templateSsml = document.getElementById("templateSsml"); 
+
+        const locationSelect = document.getElementById("locationSelect");
+        const platformSelect = document.getElementById("platformSelect");
+        const routeSelect = document.getElementById("routeSelect");
+        const frontTextSelect = document.getElementById("frontTextSelect");
+        const freeTextInput = document.getElementById("freeTextInput");
+
+        // ---- get provider of selected ttsmodel ----
+        function getSelectedModelProvider() {
+            const opt = modelSelect.options[modelSelect.selectedIndex];
+            if (!opt) return "";
+            return opt.dataset.provider || "";
+        }
+
+        function isAzureProvider() {
+            const provider = getSelectedModelProvider();
+            return provider.toLowerCase().includes("azure");
+        }
+
+        // ---- Load models on startup ----
+        async function loadModels() {
+            const res = await fetch(`${baseUrl}/TtsModels`);
+            if (!res.ok) {
+                alert("Failed to load TTS models.");
+                return;
+            }
+            const models = await res.json();
+            modelSelect.innerHTML =
+                "<option value=''>-- select a model --</option>" +
+                models.map(m =>
+                    `<option value="${m.modelId}" data-provider="${m.provider}">
+                            ${m.name} (${m.provider})
+                         </option>`
+                ).join("");
+        }
+
+        // ---- Load templates & lookup data ----
+        async function loadTemplates() {
+            const res = await fetch(`${baseUrl}/messagetemplates`);
+            if (!res.ok) {
+                alert("Failed to load message templates.");
+                return;
+            }
+            const templates = await res.json();
+
+            templateSelect.innerHTML =
+                "<option value=''>-- select a template --</option>" +
+                templates.map(t => `<option value="${t.templateId}">${t.name}</option>`).join("");
+        }
+
+        // Update Details for template (Description + SsmlContent)
+        templateSelect.addEventListener("change", async () => {
+            const templateId = templateSelect.value;
+
+            if (!templateId) {
+                templateDescription.value = "";
+                if (templateSsml) templateSsml.value = "";
+                return;
+            }
+
+            const res = await fetch(`${baseUrl}/messagetemplates/${templateId}`);
+            if (!res.ok) {
+                alert("Failed to load template details.");
+                templateDescription.value = "";
+                if (templateSsml) templateSsml.value = "";
+                return;
+            }
+
+            const t = await res.json();
+            templateDescription.value = t.description || "";
+            if (templateSsml) templateSsml.value = t.ssmlContent || "";
+        });
+
+        async function loadLocations() {
+            const res = await fetch(`${baseUrl}/Location/RefLocationNames`);
+            if (!res.ok) {
+                alert("Failed to load locations.");
+                return;
+            }
+            const names = await res.json();
+            locationSelect.innerHTML =
+                "<option value=''>-- optional: select location --</option>" +
+                names.map(n => `<option value="${n}">${n}</option>`).join("");
+        }
+
+        async function loadPlatforms() {
+            const res = await fetch(`${baseUrl}/Platform/names`);
+            if (!res.ok) {
+                alert("Failed to load platforms.");
+                return;
+            }
+            const names = await res.json();
+            platformSelect.innerHTML =
+                "<option value=''>-- optional: select platform --</option>" +
+                names.map(n => `<option value="${n}">${n}</option>`).join("");
+        }
+
+        async function loadRoutes() {
+            const res = await fetch(`${baseUrl}/Route/RouteNrs`);
+            if (!res.ok) {
+                alert("Failed to load routes.");
+                return;
+            }
+            const routeNumbers = await res.json();
+            routeSelect.innerHTML =
+                "<option value=''>-- optional: select route --</option>" +
+                routeNumbers.map(r => `<option value="${r}">${r}</option>`).join("");
+        }
+
+        async function loadFrontTexts() {
+            const res = await fetch(`${baseUrl}/TargetText/fronttexts`);
+            if (!res.ok) {
+                alert("Failed to load front texts.");
+                return;
+            }
+            const texts = await res.json();
+            frontTextSelect.innerHTML =
+                "<option value=''>-- optional: select front text --</option>" +
+                texts.map(t => `<option value="${t}">${t}</option>`).join("");
+        }
+
+        async function loadLookups() {
+            await Promise.all([
+                loadTemplates(),
+                loadLocations(),
+                loadPlatforms(),
+                loadRoutes(),
+                loadFrontTexts()
+            ]);
+        }
+
+        // ---- Synthesize from SSML file ----
+        synthesizeFileBtn.addEventListener("click", async () => {
+            const modelId = modelSelect.value;
+            const file = ssmlFile.files[0];
+
+            if (!file || !modelId) {
+                alert("Please select a SSML file and a model first.");
+                return;
+            }
+
+            const ssmlContent = await file.text();
+
+            const reqBody = {
+                ssmlContent,
+                modelId: modelId,
+                voiceId: null // Default-Voice des Models
+            };
+
+            const res = await fetch(`${baseUrl}/synthesis/from-ssml`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(reqBody)
+            });
+
+            if (!res.ok) {
+                let msg = res.statusText;
+                try {
+                    const err = await res.json();
+                    msg = err.error || JSON.stringify(err);
+                } catch { /* ignore */ }
+                alert("Error: " + msg);
+                return;
+            }
+
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            audioPlayer.src = url;
+
+            if (!isAzureProvider()) {
+                audioPlayer.play();
+            }
+        });
+
+        // ---- Synthesize from template ----
+        synthesizeTemplateBtn.addEventListener("click", async () => {
+            const modelId = modelSelect.value;
+            const templateId = templateSelect.value;
+
+            if (!templateId) {
+                alert("Please select a template.");
+                return;
+            }
+            if (!modelId) {
+                alert("Please select a model first.");
+                return;
+            }
+
+            const refLocationName = locationSelect.value || null;
+            const platformName = platformSelect.value || null;
+            const routeNr = routeSelect.value || null;
+            const frontText = frontTextSelect.value || null;
+            const freeText = freeTextInput.value || null;
+
+            const reqBody = {
+                templateId: templateId,       // GUID (string)
+                modelId: modelId,
+                voiceId: null,                // Default-Voice
+                refLocationName: refLocationName,
+                platformName: platformName,
+                routeNr: routeNr,
+                frontText: frontText,
+                freeText: freeText
+            };
+
+            const res = await fetch(`${baseUrl}/synthesis/from-template`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(reqBody)
+            });
+
+            if (!res.ok) {
+                let msg = res.statusText;
+                try {
+                    const err = await res.json();
+                    msg = err.error || JSON.stringify(err);
+                } catch { /* ignore */ }
+                alert("Error: " + msg);
+                return;
+            }
+
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            audioPlayer.src = url;
+
+            if (!isAzureProvider()) {
+                audioPlayer.play();
+            }
+        });
+
+        // ---- init ----
+        (async () => {
+            await loadModels();
+            await loadLookups();
+        })();
+    </script>
+</body>
+</html>
