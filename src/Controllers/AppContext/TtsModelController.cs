@@ -41,21 +41,4 @@ public class TtsModelController : ControllerBase
         return CreatedAtAction(nameof(GetModel), new { id = created.ModelId }, created);
     }
 
-    // // PUT: api/ttsmodels/{id}
-    // [HttpPut("{id:guid}")]
-    // public async Task<IActionResult> UpdateModel(Guid id, [FromBody] TtsModel updated)
-    // {
-    //     if (!ModelState.IsValid) return BadRequest(ModelState);
-    // 
-    //     var success = await _service.UpdateAsync(id, updated);
-    //     return success ? NoContent() : NotFound();
-    // }
-    // 
-    // // DELETE: api/models/{id}
-    // [HttpDelete("{id:guid}")]
-    // public async Task<IActionResult> DeleteModel(Guid id)
-    // {
-    //     var success = await _service.DeleteAsync(id);
-    //     return success ? NoContent() : NotFound();
-    // }
 }

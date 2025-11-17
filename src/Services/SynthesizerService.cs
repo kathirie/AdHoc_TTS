@@ -1,11 +1,11 @@
 ﻿using AdHoc_SpeechSynthesizer.Data;
-using AdHoc_SpeechSynthesizer.Helpers;
-using AdHoc_SpeechSynthesizer.Helpers.Validation;
+using AdHoc_SpeechSynthesizer.Common.Validation;
 
 using AdHoc_SpeechSynthesizer.Models.Requests;
 using AdHoc_SpeechSynthesizer.Services.Interfaces;
 using AdHoc_SpeechSynthesizer.Services.Synthesizers;
 using Microsoft.EntityFrameworkCore;
+using AdHoc_SpeechSynthesizer.Common.Templating;
 
 namespace AdHoc_SpeechSynthesizer.Services;
 
@@ -91,28 +91,35 @@ public class SynthesisService : ISynthesisService
         if (template == null)
             throw new ArgumentException($"MessageTemplate with id '{req.TemplateId}' not found.");
 
-        // Build placeholder dictionary from request
-        var values = new Dictionary<string, string>();
+        // prepare dictionaries
+        var sequenceValues = new Dictionary<string, IEnumerable<string?>>();
 
-        if (!string.IsNullOrWhiteSpace(req.RefLocationName))
-            values["Location.RefLocationName"] = req.RefLocationName;
+        // RefLocationNames
+        if (req.RefLocationNames?.Any() == true)
+            sequenceValues["Location.RefLocationName"] = req.RefLocationNames;
 
-        if (!string.IsNullOrWhiteSpace(req.PlatformName))
-            values["Platform.Name"] = req.PlatformName;
+        // PlatformNames (in deinem JSON sind das schon Strings)
+        if (req.PlatformNames?.Any() == true)
+            sequenceValues["Platform.PlatformNr"] = req.PlatformNames;
 
-        if (req.RouteNr.HasValue)
-            values["Route.RouteNr"] = req.RouteNr.Value.ToString();
+        // RouteNrs (vermutlich int? → ToString)
+        if (req.RouteNrs?.Any() == true)
+            sequenceValues["Route.RouteNr"] = req.RouteNrs
+                .Select(n => n?.ToString())
+                .ToList();
 
-        if (!string.IsNullOrWhiteSpace(req.FrontText))
-            values["TargetText.FrontText"] = req.FrontText;
+        // FrontTexts
+        if (req.FrontTexts?.Any() == true)
+            sequenceValues["TargetText.FrontText"] = req.FrontTexts;
 
-        if (!string.IsNullOrWhiteSpace(req.FreeText))
-            values["Freitext"] = req.FreeText;
+        // FreeTexts
+        if (req.FreeTexts?.Any() == true)
+            sequenceValues["Freitext"] = req.FreeTexts;
 
-        // Render SSML from template.SsmlContent
-        var ssml = TemplateRenderer.Render(template.SsmlContent, values);
+        // Rendern
+        var ssml = TemplateRenderer.Render(template.SsmlContent, sequenceValues);
 
-        // using Sythesise from SSML
+        // SSML → WAV
         var synthesisReq = new SynthesisRequest
         {
             ModelId = req.ModelId,

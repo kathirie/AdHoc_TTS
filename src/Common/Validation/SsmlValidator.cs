@@ -1,7 +1,7 @@
 ﻿using System.Xml;
 using System.Xml.Linq;
 
-namespace AdHoc_SpeechSynthesizer.Helpers.Validation;
+namespace AdHoc_SpeechSynthesizer.Common.Validation;
 
 public class SsmlValidator
 {

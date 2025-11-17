@@ -14,7 +14,7 @@ public class TtsModelService : ITtsModelService
         _db = db;
     }
 
-    public async Task<List<TtsModel>> GetAllAsync()
+    public async Task<IEnumerable<TtsModel>> GetAllAsync()
     {
         return await _db.TtsModels
             .AsNoTracking()

@@ -11,7 +11,7 @@ public class TtsVoiceService : ITtsVoiceService
     private readonly AppDbContext _db;
     public TtsVoiceService(AppDbContext db) => _db = db;
 
-    public async Task<List<TtsVoice>> GetAllAsync(string? locale = null, string? provider = null)
+    public async Task<IEnumerable<TtsVoice>> GetAllAsync(string? locale = null, string? provider = null)
     {
         var q = _db.TtsVoices.AsNoTracking().AsQueryable();
 

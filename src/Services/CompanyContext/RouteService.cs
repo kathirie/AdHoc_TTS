@@ -13,7 +13,7 @@ public class RouteService : IRouteService
         _db = db;
     }
 
-    public async Task<List<int>> GetAllRouteNumbersAsync()
+    public async Task<IEnumerable<int>> GetAllRouteNumbersAsync()
     {
         return await _db.Routes
             .AsNoTracking()
@@ -23,7 +23,7 @@ public class RouteService : IRouteService
             .ToListAsync();
     }
 
-    public async Task<List<AdHoc_SpeechSynthesizer.Models.CompanyContext.Route>> GetAllAsync(
+    public async Task<IEnumerable<AdHoc_SpeechSynthesizer.Models.CompanyContext.Route>> GetAllAsync(
         string? controlCenterId = null,
         int? routeNr = null,
         string? routeVariant = null)

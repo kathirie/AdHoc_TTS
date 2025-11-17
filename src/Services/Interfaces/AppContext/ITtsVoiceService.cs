@@ -4,6 +4,6 @@ namespace AdHoc_SpeechSynthesizer.Services.Interfaces.AppContext;
 
 public interface ITtsVoiceService
 {
-    Task<List<TtsVoice>> GetAllAsync(string? locale = null, string? provider = null);
+    Task<IEnumerable<TtsVoice>> GetAllAsync(string? locale = null, string? provider = null);
     Task<TtsVoice?> GetByIdAsync(Guid id);
 }

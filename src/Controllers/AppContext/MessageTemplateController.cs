@@ -1,4 +1,6 @@
-﻿using AdHoc_SpeechSynthesizer.Services.Interfaces.AppContext;
+﻿using AdHoc_SpeechSynthesizer.Common.Templating;
+using AdHoc_SpeechSynthesizer.Models.Responses;
+using AdHoc_SpeechSynthesizer.Services.Interfaces.AppContext;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdHoc_SpeechSynthesizer.Controllers.AppContext;
@@ -21,7 +23,16 @@ public class MessageTemplateController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetMessageTemplate(Guid id)
     {
-        var voice = await _service.GetByIdAsync(id);
-        return voice is null ? NotFound() : Ok(voice);
+        var template = await _service.GetByIdAsync(id);
+        return template is null ? NotFound() : Ok(template);
+    }
+
+    // api/messagetemplates/{id}/placeholders
+    [HttpGet("{id:guid}/placeholders")]
+    public async Task<IActionResult> GetPlaceholders(Guid id)
+    {
+
+        var placeholders = await _service.GetPlaceholdersByIdAsync(id);
+        return placeholders is null ? NotFound() : Ok(placeholders);
     }
 }

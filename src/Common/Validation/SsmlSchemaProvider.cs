@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Xml.Schema;
 
-namespace AdHoc_SpeechSynthesizer.Helpers.Validation
+namespace AdHoc_SpeechSynthesizer.Common.Validation
 {
     public static class SsmlSchemaProvider
     {

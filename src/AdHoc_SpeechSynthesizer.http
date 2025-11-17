@@ -136,14 +136,31 @@ Content-Type: application/json
 
 {
   "templateId": "02e6224f-b912-49e4-8ea4-5b408e21c6d8",
-  "modelId": "d229008e-a9b5-410c-b794-274763daca4e",
+  "modelId": "D229008E-A9B5-410C-B794-274763DACA4E",
   "voiceId": null,
-  "refLocationName": null,
-  "platformName": null,
-  "routeNr": 27,
-  "frontText": null,
-  "freeText": "technischen Störungen"
+  "refLocationNames": null,
+  "platformNames": null,
+  "routeNrs": [27],
+  "frontTexts": null,
+  "freeTexts": ["technischen Störungen"]
 }
+
+### Synthesize speech from a template with multiple values
+
+POST https://localhost:7275/api/synthesis/from-template
+Content-Type: application/json
+
+{
+  "templateId": "82a4a359-8a4d-4c95-bfa2-2231494203a4",
+  "modelId": "D229008E-A9B5-410C-B794-274763DACA4E",
+  "voiceId": null,
+  "refLocationNames": ["Hauptbahnhof", "Rathausplatz"],
+  "platformNames": ["1", "3"],
+  "routeNrs": null,
+  "frontTexts": null,
+  "freeTexts": null
+}
+
 
 
 

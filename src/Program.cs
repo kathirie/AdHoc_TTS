@@ -1,5 +1,5 @@
 using AdHoc_SpeechSynthesizer.Data;
-using AdHoc_SpeechSynthesizer.Helpers.Validation;
+using AdHoc_SpeechSynthesizer.Common.Validation;
 using AdHoc_SpeechSynthesizer.Services;
 using AdHoc_SpeechSynthesizer.Services.AppContext;
 using AdHoc_SpeechSynthesizer.Services.CompanyContext;
@@ -27,7 +27,7 @@ builder.Services.AddDbContext<CompanyDbContext>(options =>
 
 builder.Services.AddSingleton<SsmlValidator>();
 
-builder.Services.AddScoped<ITtsModelService, TtsModelService>();
+builder.Services.AddScoped<ITtsModelService, TtsModelService>(); 
 builder.Services.AddScoped<ITtsVoiceService, TtsVoiceService>();
 builder.Services.AddScoped<IMessageTemplateService, MessageTemplateService>();
 

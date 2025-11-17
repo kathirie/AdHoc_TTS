@@ -1,7 +1,10 @@
-﻿using AdHoc_SpeechSynthesizer.Data;
+﻿using AdHoc_SpeechSynthesizer.Common.Templating;
+using AdHoc_SpeechSynthesizer.Data;
 using AdHoc_SpeechSynthesizer.Models.AppContext;
+using AdHoc_SpeechSynthesizer.Models.Responses;
 using AdHoc_SpeechSynthesizer.Services.Interfaces.AppContext;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 
 
 namespace AdHoc_SpeechSynthesizer.Services.AppContext;
@@ -15,7 +18,7 @@ public class MessageTemplateService : IMessageTemplateService
         _db = db;
     }
 
-    public async Task<List<MessageTemplate>> GetAllAsync()
+    public async Task<IEnumerable<MessageTemplate>> GetAllAsync()
     {
         return await _db.MessageTemplates
                         .AsNoTracking()
@@ -27,5 +30,22 @@ public class MessageTemplateService : IMessageTemplateService
         return await _db.MessageTemplates
                         .AsNoTracking()
                         .FirstOrDefaultAsync(v => v.TemplateId == id);
+    }
+
+    public async Task<IEnumerable<TemplatePlaceholderResponse?>> GetPlaceholdersByIdAsync(Guid id)
+    {
+        // check if id exists
+        var template = await GetByIdAsync(id);
+        if (template is null)
+        {
+            return null; // check if this is correct value
+        }
+
+        // return await -> Ergebnisliste aus TemplatePlaceholderScanner
+        var placeholderNames = TemplatePlaceholderScanner.GetPlaceholders(template.SsmlContent);
+
+        return placeholderNames
+        .Select(name => new TemplatePlaceholderResponse { Name = name })
+        .ToList();
     }
 }

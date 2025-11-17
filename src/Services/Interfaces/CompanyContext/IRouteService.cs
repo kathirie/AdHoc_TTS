@@ -4,10 +4,10 @@ namespace AdHoc_SpeechSynthesizer.Services.Interfaces.CompanyContext;
 
 public interface IRouteService
 {
-    Task<List<int>> GetAllRouteNumbersAsync();
+    Task<IEnumerable<int>> GetAllRouteNumbersAsync();
 
     // Returns routes, optionally filtered by control center, route number and/or variant.
-    Task<List<AdHoc_SpeechSynthesizer.Models.CompanyContext.Route>> GetAllAsync(
+    Task<IEnumerable<AdHoc_SpeechSynthesizer.Models.CompanyContext.Route>> GetAllAsync(
         string? controlCenterId = null,
         int? routeNr = null,
         string? routeVariant = null);

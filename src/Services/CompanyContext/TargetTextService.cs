@@ -14,7 +14,7 @@ public class TargetTextService : ITargetTextService
         _db = db;
     }
 
-    public async Task<List<string>> GetAllFrontTextsAsync()
+    public async Task<IEnumerable<string>> GetAllFrontTextsAsync()
     {
         return await _db.TargetTexts
             .AsNoTracking()
@@ -25,7 +25,7 @@ public class TargetTextService : ITargetTextService
             .ToListAsync();
     }
 
-    public async Task<List<TargetText>> GetAllAsync(string? controlCenterId = null)
+    public async Task<IEnumerable<TargetText>> GetAllAsync(string? controlCenterId = null)
     {
         var query = _db.TargetTexts.AsNoTracking().AsQueryable();
 

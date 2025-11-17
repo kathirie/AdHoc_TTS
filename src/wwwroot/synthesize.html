@@ -36,7 +36,7 @@
 
         textarea {
             font-family: monospace;
-            white-space: pre-wrap; 
+            white-space: pre-wrap;
             word-wrap: break-word;
         }
 
@@ -48,18 +48,27 @@
         small {
             color: #666;
         }
+
+        .placeholder-field {
+            margin-top: 12px;
+            padding: 8px;
+            border-left: 3px solid #999;
+            background: #f7f7f7;
+        }
     </style>
 </head>
 <body>
+
     <h1>Speech Synthesizer Test</h1>
 
+    <!-- 1. TTS Model -->
     <section>
         <h2>1. TTS Model</h2>
-
         <label for="modelSelect">Select Model:</label>
         <select id="modelSelect"></select>
     </section>
 
+    <!-- 2. SSML File Synth -->
     <section>
         <h2>2. Synthesize from SSML File</h2>
 
@@ -69,6 +78,7 @@
         <button id="synthesizeFileBtn">Synthesize from File</button>
     </section>
 
+    <!-- 3. Template Synth -->
     <section>
         <h2>3. Synthesize from Template</h2>
 
@@ -82,32 +92,15 @@
 
         <hr />
 
-        <label for="locationSelect">Location (RefLocationName):</label>
-        <select id="locationSelect">
-            <option value="">-- optional: select location --</option>
-        </select>
+        <h3>Required Placeholder Values</h3>
+        <p><small>Fields are generated dynamically based on the placeholders in the template SSML.</small></p>
 
-        <label for="platformSelect">Platform (Name):</label>
-        <select id="platformSelect">
-            <option value="">-- optional: select platform --</option>
-        </select>
-
-        <label for="routeSelect">Route (RouteNr):</label>
-        <select id="routeSelect">
-            <option value="">-- optional: select route --</option>
-        </select>
-
-        <label for="frontTextSelect">FrontText (TargetText.FrontText):</label>
-        <select id="frontTextSelect">
-            <option value="">-- optional: select front text --</option>
-        </select>
-
-        <label for="freeTextInput">Free text (Freitext, optional):</label>
-        <input type="text" id="freeTextInput" placeholder="e.g. technischen Störungen" />
+        <div id="placeholderContainer"></div>
 
         <button id="synthesizeTemplateBtn">Synthesize from Template</button>
     </section>
 
+    <!-- 4. Result -->
     <section>
         <h2>4. Result</h2>
         <audio id="audioPlayer" controls></audio>
@@ -124,27 +117,118 @@
 
         const templateSelect = document.getElementById("templateSelect");
         const templateDescription = document.getElementById("templateDescription");
-        const templateSsml = document.getElementById("templateSsml"); 
+        const placeholderContainer = document.getElementById("placeholderContainer");
 
-        const locationSelect = document.getElementById("locationSelect");
-        const platformSelect = document.getElementById("platformSelect");
-        const routeSelect = document.getElementById("routeSelect");
-        const frontTextSelect = document.getElementById("frontTextSelect");
-        const freeTextInput = document.getElementById("freeTextInput");
+        // Lookup-Daten
+        let locationNames = [];
+        let platformNames = [];
+        let routeNumbers = [];
+        let frontTexts = [];
 
-        // ---- get provider of selected ttsmodel ----
-        function getSelectedModelProvider() {
-            const opt = modelSelect.options[modelSelect.selectedIndex];
-            if (!opt) return "";
-            return opt.dataset.provider || "";
+        // Placeholder-Erkennung im SSML
+        const placeholderRegex = /\{([^}]+)\}/g;
+
+        // Konfiguration, wie welcher Placeholder-Typ im UI dargestellt wird
+        const placeholderConfig = {
+            "Location.RefLocationName": {
+                label: "Location (RefLocationName)",
+                type: "select",
+                source: "locations"
+            },
+            "Platform.PlatformNr": {
+                label: "Platform (PlatformNr)",
+                type: "select",
+                source: "platforms"
+            },
+            "Route.RouteNr": {
+                label: "Route (RouteNr)",
+                type: "select",
+                source: "routes"
+            },
+            "TargetText.FrontText": {
+                label: "FrontText (TargetText.FrontText)",
+                type: "select",
+                source: "frontTexts"
+            },
+            "Freitext": {
+                label: "Free Text (Freitext)",
+                type: "textarea"
+            }
+        };
+
+        function getOptionsForSource(source) {
+            switch (source) {
+                case "locations": return locationNames;
+                case "platforms": return platformNames;
+                case "routes": return routeNumbers;
+                case "frontTexts": return frontTexts;
+                default: return [];
+            }
         }
 
-        function isAzureProvider() {
-            const provider = getSelectedModelProvider();
-            return provider.toLowerCase().includes("azure");
+        function parsePlaceholderOccurrences(ssmlContent) {
+            const counts = {};
+            let match;
+            while ((match = placeholderRegex.exec(ssmlContent)) !== null) {
+                const name = match[1];
+                counts[name] = (counts[name] || 0) + 1;
+            }
+            return counts; // z.B. { "Location.RefLocationName": 2, "Platform.PlatformNr": 2 }
         }
 
-        // ---- Load models on startup ----
+        function buildPlaceholderUI(ssmlContent) {
+            placeholderContainer.innerHTML = "";
+
+            if (!ssmlContent) return;
+
+            const occurrences = parsePlaceholderOccurrences(ssmlContent);
+
+            Object.entries(occurrences).forEach(([name, count]) => {
+                const cfg = placeholderConfig[name];
+                if (!cfg) {
+                    // Unbekannter Placeholder – fürs UI ignorieren
+                    return;
+                }
+
+                for (let i = 0; i < count; i++) {
+                    const wrapper = document.createElement("div");
+                    wrapper.className = "placeholder-field";
+
+                    const label = document.createElement("label");
+                    const suffix = (count > 1) ? ` #${i + 1}` : "";
+                    label.textContent = `${cfg.label}${suffix}:`;
+                    wrapper.appendChild(label);
+
+                    let input;
+
+                    if (cfg.type === "select") {
+                        input = document.createElement("select");
+                        const options = getOptionsForSource(cfg.source);
+                        options.forEach(val => {
+                            const opt = document.createElement("option");
+                            opt.value = val;
+                            opt.textContent = val;
+                            input.appendChild(opt);
+                        });
+                    } else if (cfg.type === "textarea") {
+                        input = document.createElement("textarea");
+                        input.rows = 2;
+                    } else {
+                        input = document.createElement("input");
+                        input.type = "text";
+                    }
+
+                    input.classList.add("placeholder-input");
+                    input.dataset.placeholder = name;
+                    input.dataset.index = String(i);
+
+                    wrapper.appendChild(input);
+                    placeholderContainer.appendChild(wrapper);
+                }
+            });
+        }
+
+        // ---------- TTS Models laden ----------
         async function loadModels() {
             const res = await fetch(`${baseUrl}/TtsModels`);
             if (!res.ok) {
@@ -156,12 +240,12 @@
                 "<option value=''>-- select a model --</option>" +
                 models.map(m =>
                     `<option value="${m.modelId}" data-provider="${m.provider}">
-                            ${m.name} (${m.provider})
-                         </option>`
+                        ${m.name} (${m.provider})
+                     </option>`
                 ).join("");
         }
 
-        // ---- Load templates & lookup data ----
+        // ---------- Lookups laden ----------
         async function loadTemplates() {
             const res = await fetch(`${baseUrl}/messagetemplates`);
             if (!res.ok) {
@@ -169,34 +253,10 @@
                 return;
             }
             const templates = await res.json();
-
             templateSelect.innerHTML =
                 "<option value=''>-- select a template --</option>" +
                 templates.map(t => `<option value="${t.templateId}">${t.name}</option>`).join("");
         }
-
-        // Update Details for template (Description + SsmlContent)
-        templateSelect.addEventListener("change", async () => {
-            const templateId = templateSelect.value;
-
-            if (!templateId) {
-                templateDescription.value = "";
-                if (templateSsml) templateSsml.value = "";
-                return;
-            }
-
-            const res = await fetch(`${baseUrl}/messagetemplates/${templateId}`);
-            if (!res.ok) {
-                alert("Failed to load template details.");
-                templateDescription.value = "";
-                if (templateSsml) templateSsml.value = "";
-                return;
-            }
-
-            const t = await res.json();
-            templateDescription.value = t.description || "";
-            if (templateSsml) templateSsml.value = t.ssmlContent || "";
-        });
 
         async function loadLocations() {
             const res = await fetch(`${baseUrl}/Location/RefLocationNames`);
@@ -204,10 +264,7 @@
                 alert("Failed to load locations.");
                 return;
             }
-            const names = await res.json();
-            locationSelect.innerHTML =
-                "<option value=''>-- optional: select location --</option>" +
-                names.map(n => `<option value="${n}">${n}</option>`).join("");
+            locationNames = await res.json();
         }
 
         async function loadPlatforms() {
@@ -216,10 +273,7 @@
                 alert("Failed to load platforms.");
                 return;
             }
-            const names = await res.json();
-            platformSelect.innerHTML =
-                "<option value=''>-- optional: select platform --</option>" +
-                names.map(n => `<option value="${n}">${n}</option>`).join("");
+            platformNames = await res.json();
         }
 
         async function loadRoutes() {
@@ -228,10 +282,7 @@
                 alert("Failed to load routes.");
                 return;
             }
-            const routeNumbers = await res.json();
-            routeSelect.innerHTML =
-                "<option value=''>-- optional: select route --</option>" +
-                routeNumbers.map(r => `<option value="${r}">${r}</option>`).join("");
+            routeNumbers = await res.json();
         }
 
         async function loadFrontTexts() {
@@ -240,10 +291,7 @@
                 alert("Failed to load front texts.");
                 return;
             }
-            const texts = await res.json();
-            frontTextSelect.innerHTML =
-                "<option value=''>-- optional: select front text --</option>" +
-                texts.map(t => `<option value="${t}">${t}</option>`).join("");
+            frontTexts = await res.json();
         }
 
         async function loadLookups() {
@@ -256,13 +304,36 @@
             ]);
         }
 
-        // ---- Synthesize from SSML file ----
+        // ---------- Template-Change ----------
+        templateSelect.addEventListener("change", async () => {
+            placeholderContainer.innerHTML = "";
+            templateDescription.value = "";
+
+            const templateId = templateSelect.value;
+            if (!templateId) {
+                return;
+            }
+
+            const res = await fetch(`${baseUrl}/messagetemplates/${templateId}`);
+            if (!res.ok) {
+                alert("Failed to load template details.");
+                return;
+            }
+
+            const t = await res.json();
+            templateDescription.value = t.description || "";
+            const ssmlContent = t.ssmlContent || "";
+
+            buildPlaceholderUI(ssmlContent);
+        });
+
+        // ---------- Synthesize from SSML file ----------
         synthesizeFileBtn.addEventListener("click", async () => {
             const modelId = modelSelect.value;
             const file = ssmlFile.files[0];
 
             if (!file || !modelId) {
-                alert("Please select a SSML file and a model first.");
+                alert("Please select a model and a SSML file.");
                 return;
             }
 
@@ -270,8 +341,8 @@
 
             const reqBody = {
                 ssmlContent,
-                modelId: modelId,
-                voiceId: null // Default-Voice des Models
+                modelId,
+                voiceId: null
             };
 
             const res = await fetch(`${baseUrl}/synthesis/from-ssml`, {
@@ -285,7 +356,7 @@
                 try {
                     const err = await res.json();
                     msg = err.error || JSON.stringify(err);
-                } catch { /* ignore */ }
+                } catch { }
                 alert("Error: " + msg);
                 return;
             }
@@ -293,13 +364,10 @@
             const blob = await res.blob();
             const url = URL.createObjectURL(blob);
             audioPlayer.src = url;
-
-            if (!isAzureProvider()) {
-                audioPlayer.play();
-            }
+            audioPlayer.play();
         });
 
-        // ---- Synthesize from template ----
+        // ---------- Synthesize from Template ----------
         synthesizeTemplateBtn.addEventListener("click", async () => {
             const modelId = modelSelect.value;
             const templateId = templateSelect.value;
@@ -309,26 +377,39 @@
                 return;
             }
             if (!modelId) {
-                alert("Please select a model first.");
+                alert("Please select a model.");
                 return;
             }
 
-            const refLocationName = locationSelect.value || null;
-            const platformName = platformSelect.value || null;
-            const routeNr = routeSelect.value || null;
-            const frontText = frontTextSelect.value || null;
-            const freeText = freeTextInput.value || null;
+            // Alle Placeholder-Felder einsammeln
+            const inputs = placeholderContainer.querySelectorAll(".placeholder-input");
+            const map = {}; // placeholderName → array of values in occurrence order
 
+            inputs.forEach(input => {
+                const name = input.dataset.placeholder;  // z.B. "Location.RefLocationName"
+                const idx = Number(input.dataset.index); // 0,1,2,...
+
+                if (!map[name]) {
+                    map[name] = [];
+                }
+
+                // Immer einen Eintrag setzen – leere Strings zählen als "ersetzt durch ''"
+                map[name][idx] = input.value ?? "";
+            });
+
+            // Request-Body entsprechend deiner DTO-Namen
             const reqBody = {
-                templateId: templateId,       // GUID (string)
-                modelId: modelId,
-                voiceId: null,                // Default-Voice
-                refLocationName: refLocationName,
-                platformName: platformName,
-                routeNr: routeNr,
-                frontText: frontText,
-                freeText: freeText
+                templateId,
+                modelId,
+                voiceId: null,
+                refLocationNames: map["Location.RefLocationName"] || [],
+                platformNrs: (map["Platform.PlatformNr"] || []).map(v => v === "" ? 0 : Number(v)),
+                routeNrs: (map["Route.RouteNr"] || []).map(v => v === "" ? 0 : Number(v)),
+                frontTexts: map["TargetText.FrontText"] || [],
+                freeTexts: map["Freitext"] || []
             };
+
+            console.log("from-template request body:", reqBody);
 
             const res = await fetch(`${baseUrl}/synthesis/from-template`, {
                 method: "POST",
@@ -341,7 +422,7 @@
                 try {
                     const err = await res.json();
                     msg = err.error || JSON.stringify(err);
-                } catch { /* ignore */ }
+                } catch { }
                 alert("Error: " + msg);
                 return;
             }
@@ -349,17 +430,15 @@
             const blob = await res.blob();
             const url = URL.createObjectURL(blob);
             audioPlayer.src = url;
-
-            if (!isAzureProvider()) {
-                audioPlayer.play();
-            }
+            audioPlayer.play();
         });
 
-        // ---- init ----
+        // ---------- Init ----------
         (async () => {
             await loadModels();
             await loadLookups();
         })();
     </script>
+
 </body>
 </html>

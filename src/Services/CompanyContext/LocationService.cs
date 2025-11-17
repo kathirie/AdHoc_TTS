@@ -14,7 +14,7 @@ namespace AdHoc_SpeechSynthesizer.Services.CompanyContext
             _db = db;
         }
 
-        public async Task<List<string>> GetAllRefLocationNamesAsync()
+        public async Task<IEnumerable<string>> GetAllRefLocationNamesAsync()
         {
             return await _db.Locations
                 .AsNoTracking()

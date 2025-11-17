@@ -1,4 +1,4 @@
-﻿namespace AdHoc_SpeechSynthesizer.Helpers.Validation
+﻿namespace AdHoc_SpeechSynthesizer.Common.Validation
 {
     public record SsmlValidationResult(
         bool IsXmlWellFormed,
