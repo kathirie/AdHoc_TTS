@@ -14,18 +14,18 @@ namespace AdHoc_SpeechSynthesizer.Services.CompanyContext
             _db = db;
         }
 
-        public async Task<IEnumerable<string>> GetAllPlatformNamesAsync()
+        public async Task<IEnumerable<int>> GetAllPlatformNumbersAsync()
         {
             return await _db.Platforms
                 .AsNoTracking()
-                .Where(p => p.Name != null && p.Name != "")
-                .Select(p => p.Name!)
+                .Where(p => p.PlatformNr >= 0)
+                .Select(p => p.PlatformNr!)
                 .Distinct()
-                .OrderBy(name => name)
+                .OrderBy(platformnumber => platformnumber)
                 .ToListAsync();
         }
 
-        public async Task<List<Platform>> GetAllAsync(
+        public async Task<IEnumerable<Platform>> GetAllAsync(
             string? controlCenterId = null,
             int? locationTypeNr = null,
             int? locationNr = null)

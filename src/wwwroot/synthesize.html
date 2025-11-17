@@ -119,16 +119,14 @@
         const templateDescription = document.getElementById("templateDescription");
         const placeholderContainer = document.getElementById("placeholderContainer");
 
-        // Lookup-Daten
+        // Lookup-Data
         let locationNames = [];
-        let platformNames = [];
+        let platformNumbers = [];
         let routeNumbers = [];
         let frontTexts = [];
 
-        // Placeholder-Erkennung im SSML
         const placeholderRegex = /\{([^}]+)\}/g;
 
-        // Konfiguration, wie welcher Placeholder-Typ im UI dargestellt wird
         const placeholderConfig = {
             "Location.RefLocationName": {
                 label: "Location (RefLocationName)",
@@ -159,21 +157,35 @@
         function getOptionsForSource(source) {
             switch (source) {
                 case "locations": return locationNames;
-                case "platforms": return platformNames;
+                case "platforms": return platformNumbers;
                 case "routes": return routeNumbers;
                 case "frontTexts": return frontTexts;
                 default: return [];
             }
         }
 
-        function parsePlaceholderOccurrences(ssmlContent) {
-            const counts = {};
+        function parsePlaceholderOccurrencesInOrder(ssmlContent) {
+            const occurrences = [];
+            const countsByName = {}; 
             let match;
+
             while ((match = placeholderRegex.exec(ssmlContent)) !== null) {
                 const name = match[1];
-                counts[name] = (counts[name] || 0) + 1;
+
+                if (!placeholderConfig[name]) {
+                    continue;
+                }
+
+                const currentIndex = countsByName[name] ?? 0;
+                countsByName[name] = currentIndex + 1;
+
+                occurrences.push({
+                    name,
+                    index: currentIndex 
+                });
             }
-            return counts; // z.B. { "Location.RefLocationName": 2, "Platform.PlatformNr": 2 }
+
+            return occurrences;
         }
 
         function buildPlaceholderUI(ssmlContent) {
@@ -181,54 +193,51 @@
 
             if (!ssmlContent) return;
 
-            const occurrences = parsePlaceholderOccurrences(ssmlContent);
+            const occurrences = parsePlaceholderOccurrencesInOrder(ssmlContent);
 
-            Object.entries(occurrences).forEach(([name, count]) => {
+            occurrences.forEach(({ name, index }) => {
                 const cfg = placeholderConfig[name];
                 if (!cfg) {
-                    // Unbekannter Placeholder – fürs UI ignorieren
                     return;
                 }
 
-                for (let i = 0; i < count; i++) {
-                    const wrapper = document.createElement("div");
-                    wrapper.className = "placeholder-field";
+                const wrapper = document.createElement("div");
+                wrapper.className = "placeholder-field";
 
-                    const label = document.createElement("label");
-                    const suffix = (count > 1) ? ` #${i + 1}` : "";
-                    label.textContent = `${cfg.label}${suffix}:`;
-                    wrapper.appendChild(label);
+                const label = document.createElement("label");
+                const suffix = index > 0 ? ` #${index + 1}` : "";
+                label.textContent = `${cfg.label}${suffix}:`;
+                wrapper.appendChild(label);
 
-                    let input;
+                let input;
 
-                    if (cfg.type === "select") {
-                        input = document.createElement("select");
-                        const options = getOptionsForSource(cfg.source);
-                        options.forEach(val => {
-                            const opt = document.createElement("option");
-                            opt.value = val;
-                            opt.textContent = val;
-                            input.appendChild(opt);
-                        });
-                    } else if (cfg.type === "textarea") {
-                        input = document.createElement("textarea");
-                        input.rows = 2;
-                    } else {
-                        input = document.createElement("input");
-                        input.type = "text";
-                    }
-
-                    input.classList.add("placeholder-input");
-                    input.dataset.placeholder = name;
-                    input.dataset.index = String(i);
-
-                    wrapper.appendChild(input);
-                    placeholderContainer.appendChild(wrapper);
+                if (cfg.type === "select") {
+                    input = document.createElement("select");
+                    const options = getOptionsForSource(cfg.source);
+                    options.forEach(val => {
+                        const opt = document.createElement("option");
+                        opt.value = val;
+                        opt.textContent = val;
+                        input.appendChild(opt);
+                    });
+                } else if (cfg.type === "textarea") {
+                    input = document.createElement("textarea");
+                    input.rows = 2;
+                } else {
+                    input = document.createElement("input");
+                    input.type = "text";
                 }
+
+                input.classList.add("placeholder-input");
+                input.dataset.placeholder = name;
+                input.dataset.index = String(index);
+
+                wrapper.appendChild(input);
+                placeholderContainer.appendChild(wrapper);
             });
         }
 
-        // ---------- TTS Models laden ----------
+        // ---------- load TTS Models ----------
         async function loadModels() {
             const res = await fetch(`${baseUrl}/TtsModels`);
             if (!res.ok) {
@@ -245,7 +254,7 @@
                 ).join("");
         }
 
-        // ---------- Lookups laden ----------
+        // ---------- load Lookups ----------
         async function loadTemplates() {
             const res = await fetch(`${baseUrl}/messagetemplates`);
             if (!res.ok) {
@@ -268,12 +277,12 @@
         }
 
         async function loadPlatforms() {
-            const res = await fetch(`${baseUrl}/Platform/names`);
+            const res = await fetch(`${baseUrl}/Platform/platformnumbers`);
             if (!res.ok) {
                 alert("Failed to load platforms.");
                 return;
             }
-            platformNames = await res.json();
+            platformNumbers = await res.json();
         }
 
         async function loadRoutes() {
@@ -381,29 +390,27 @@
                 return;
             }
 
-            // Alle Placeholder-Felder einsammeln
+            // collect placeholder
             const inputs = placeholderContainer.querySelectorAll(".placeholder-input");
-            const map = {}; // placeholderName → array of values in occurrence order
+            const map = {}; 
 
             inputs.forEach(input => {
-                const name = input.dataset.placeholder;  // z.B. "Location.RefLocationName"
-                const idx = Number(input.dataset.index); // 0,1,2,...
+                const name = input.dataset.placeholder;  
+                const idx = Number(input.dataset.index); 
 
                 if (!map[name]) {
                     map[name] = [];
                 }
 
-                // Immer einen Eintrag setzen – leere Strings zählen als "ersetzt durch ''"
                 map[name][idx] = input.value ?? "";
             });
 
-            // Request-Body entsprechend deiner DTO-Namen
             const reqBody = {
                 templateId,
                 modelId,
                 voiceId: null,
                 refLocationNames: map["Location.RefLocationName"] || [],
-                platformNrs: (map["Platform.PlatformNr"] || []).map(v => v === "" ? 0 : Number(v)),
+                platformNumbers: (map["Platform.PlatformNr"] || []).map(v => v === "" ? 0 : Number(v)),
                 routeNrs: (map["Route.RouteNr"] || []).map(v => v === "" ? 0 : Number(v)),
                 frontTexts: map["TargetText.FrontText"] || [],
                 freeTexts: map["Freitext"] || []

@@ -14,11 +14,11 @@ public class PlatformController : ControllerBase
         _service = service;
     }
 
-    // /api/platforms/names
-    [HttpGet("names")]
-    public async Task<IActionResult> GetAllPlatformNames()
+    // /api/platforms/platformnumbers
+    [HttpGet("platformnumbers")]
+    public async Task<IActionResult> GetAllPlatformNumbers()
     {
-        var names = await _service.GetAllPlatformNamesAsync();
+        var names = await _service.GetAllPlatformNumbersAsync();
         return Ok(names);
     }
 

@@ -139,7 +139,7 @@ Content-Type: application/json
   "modelId": "D229008E-A9B5-410C-B794-274763DACA4E",
   "voiceId": null,
   "refLocationNames": null,
-  "platformNames": null,
+  "platformNumbers": null,
   "routeNrs": [27],
   "frontTexts": null,
   "freeTexts": ["technischen Störungen"]
@@ -155,7 +155,7 @@ Content-Type: application/json
   "modelId": "D229008E-A9B5-410C-B794-274763DACA4E",
   "voiceId": null,
   "refLocationNames": ["Hauptbahnhof", "Rathausplatz"],
-  "platformNames": ["1", "3"],
+  "platformNumbers": [1, 3],
   "routeNrs": null,
   "frontTexts": null,
   "freeTexts": null
@@ -185,8 +185,8 @@ Accept: application/json
 
 
 
-### all platforms names
-GET https://localhost:7275/api/Platform/names
+### all platforms numbers
+GET https://localhost:7275/api/Platform/platformnumbers
 Accept: application/json
 
 ### all platforms for a location

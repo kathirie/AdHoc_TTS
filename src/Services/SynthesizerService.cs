@@ -92,15 +92,17 @@ public class SynthesisService : ISynthesisService
             throw new ArgumentException($"MessageTemplate with id '{req.TemplateId}' not found.");
 
         // prepare dictionaries
-        var sequenceValues = new Dictionary<string, IEnumerable<string?>>();
+        var sequenceValues = new Dictionary<string, IEnumerable<string>>();
 
         // RefLocationNames
         if (req.RefLocationNames?.Any() == true)
             sequenceValues["Location.RefLocationName"] = req.RefLocationNames;
 
-        // PlatformNames (in deinem JSON sind das schon Strings)
-        if (req.PlatformNames?.Any() == true)
-            sequenceValues["Platform.PlatformNr"] = req.PlatformNames;
+        // PlatformNames 
+        if (req.PlatformNumbers?.Any() == true)
+            sequenceValues["Platform.PlatformNr"] = req.PlatformNumbers
+                .Select(n => n?.ToString())
+                .ToList();
 
         // RouteNrs (vermutlich int? → ToString)
         if (req.RouteNrs?.Any() == true)
