@@ -1,5 +1,4 @@
-﻿using AdHoc_SpeechSynthesizer.Models.AppContext;
-using AdHoc_SpeechSynthesizer.Services.Interfaces.AppContext;
+﻿using AdHoc_SpeechSynthesizer.Services.Interfaces.AppContext;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdHoc_SpeechSynthesizer.Controllers.AppContext;
@@ -30,15 +29,4 @@ public class TtsModelController : ControllerBase
         var model = await _service.GetByIdAsync(id);
         return model is null ? NotFound() : Ok(model);
     }
-
-    // POST: api/ttsmodels
-    [HttpPost]
-    public async Task<IActionResult> CreateModel([FromBody] TtsModel model)
-    {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-
-        var created = await _service.CreateAsync(model);
-        return CreatedAtAction(nameof(GetModel), new { id = created.ModelId }, created);
-    }
-
 }

@@ -40,7 +40,6 @@ builder.Services.AddScoped<ISynthesisService, SynthesisService>();
 
 var app = builder.Build();
 
-
 await TtsModelSeeder.SeedAsync(app.Services);
 await TtsVoiceSeeder.SeedAsync(app.Services);
 await MessageTemplateSeeder.SeedAsync(app.Services);

@@ -29,35 +29,4 @@ public class TtsModelService : ITtsModelService
             .AsNoTracking()
             .FirstOrDefaultAsync(m => m.ModelId == id);
     }
-
-    public async Task<TtsModel> CreateAsync(TtsModel model)
-    {
-        model.ModelId = Guid.NewGuid();
-
-        _db.TtsModels.Add(model);
-        await _db.SaveChangesAsync();
-        return model;
-    }
-
-    public async Task<bool> UpdateAsync(Guid id, TtsModel updated)
-    {
-        var existing = await _db.TtsModels.FindAsync(id);
-        if (existing is null) return false;
-
-        existing.Name = updated.Name;
-        existing.Provider = updated.Provider;
-
-        await _db.SaveChangesAsync();
-        return true;
-    }
-
-    public async Task<bool> DeleteAsync(Guid id)
-    {
-        var model = await _db.TtsModels.FindAsync(id);
-        if (model is null) return false;
-
-        _db.TtsModels.Remove(model);
-        await _db.SaveChangesAsync();
-        return true;
-    }
 }

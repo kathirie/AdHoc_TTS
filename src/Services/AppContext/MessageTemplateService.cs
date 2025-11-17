@@ -34,14 +34,12 @@ public class MessageTemplateService : IMessageTemplateService
 
     public async Task<IEnumerable<TemplatePlaceholderResponse?>> GetPlaceholdersByIdAsync(Guid id)
     {
-        // check if id exists
         var template = await GetByIdAsync(id);
         if (template is null)
         {
-            return null; // check if this is correct value
+            return null; 
         }
 
-        // return await -> Ergebnisliste aus TemplatePlaceholderScanner
         var placeholderNames = TemplatePlaceholderScanner.GetPlaceholders(template.SsmlContent);
 
         return placeholderNames

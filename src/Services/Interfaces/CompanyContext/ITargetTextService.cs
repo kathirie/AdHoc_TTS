@@ -4,7 +4,7 @@ namespace AdHoc_SpeechSynthesizer.Services.Interfaces.CompanyContext;
 
 public interface ITargetTextService
 {
-    Task<IEnumerable<string>> GetAllFrontTextsAsync();
+    Task<IEnumerable<TargetText>> GetAllAsync();
 
-    Task<TargetText?> GetByKeyAsync(string controlCenterId, int versionNr, int targetTextNr);
+    Task<IEnumerable<string>> GetAllFrontTextsAsync();
 }

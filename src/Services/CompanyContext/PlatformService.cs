@@ -14,32 +14,9 @@ namespace AdHoc_SpeechSynthesizer.Services.CompanyContext
             _db = db;
         }
 
-        public async Task<IEnumerable<int>> GetAllPlatformNumbersAsync()
-        {
-            return await _db.Platforms
-                .AsNoTracking()
-                .Where(p => p.PlatformNr >= 0)
-                .Select(p => p.PlatformNr!)
-                .Distinct()
-                .OrderBy(platformnumber => platformnumber)
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<Platform>> GetAllAsync(
-            string? controlCenterId = null,
-            int? locationTypeNr = null,
-            int? locationNr = null)
+        public async Task<IEnumerable<Platform>> GetAllAsync()
         {
             var query = _db.Platforms.AsNoTracking().AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(controlCenterId))
-                query = query.Where(p => p.ControlCenterId == controlCenterId);
-
-            if (locationTypeNr.HasValue)
-                query = query.Where(p => p.LocationTypeNr == locationTypeNr.Value);
-
-            if (locationNr.HasValue)
-                query = query.Where(p => p.LocationNr == locationNr.Value);
 
             return await query
                 .OrderBy(p => p.ControlCenterId)
@@ -49,38 +26,15 @@ namespace AdHoc_SpeechSynthesizer.Services.CompanyContext
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Platform>> GetByLocationAsync(
-            string controlCenterId,
-            int versionNr,
-            int locationTypeNr,
-            int locationNr)
+        public async Task<IEnumerable<int>> GetAllPlatformNumbersAsync()
         {
             return await _db.Platforms
                 .AsNoTracking()
-                .Where(p =>
-                    p.ControlCenterId == controlCenterId &&
-                    p.VersionNr == versionNr &&
-                    p.LocationTypeNr == locationTypeNr &&
-                    p.LocationNr == locationNr)
-                .OrderBy(p => p.PlatformNr)
+                .Where(p => p.PlatformNr >= 0)
+                .Select(p => p.PlatformNr!)
+                .Distinct()
+                .OrderBy(platformnumber => platformnumber)
                 .ToListAsync();
-        }
-
-        public async Task<Platform?> GetByKeyAsync(
-            string controlCenterId,
-            int versionNr,
-            int locationTypeNr,
-            int locationNr,
-            int platformNr)
-        {
-            return await _db.Platforms
-                .AsNoTracking()
-                .FirstOrDefaultAsync(p =>
-                    p.ControlCenterId == controlCenterId &&
-                    p.VersionNr == versionNr &&
-                    p.LocationTypeNr == locationTypeNr &&
-                    p.LocationNr == locationNr &&
-                    p.PlatformNr == platformNr);
         }
     }
 }

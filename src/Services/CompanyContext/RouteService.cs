@@ -13,31 +13,9 @@ public class RouteService : IRouteService
         _db = db;
     }
 
-    public async Task<IEnumerable<int>> GetAllRouteNumbersAsync()
-    {
-        return await _db.Routes
-            .AsNoTracking()
-            .Select(r => r.RouteNr)
-            .Distinct()
-            .OrderBy(nr => nr)
-            .ToListAsync();
-    }
-
-    public async Task<IEnumerable<AdHoc_SpeechSynthesizer.Models.CompanyContext.Route>> GetAllAsync(
-        string? controlCenterId = null,
-        int? routeNr = null,
-        string? routeVariant = null)
+    public async Task<IEnumerable<AdHoc_SpeechSynthesizer.Models.CompanyContext.Route>> GetAllAsync()
     {
         var query = _db.Routes.AsNoTracking().AsQueryable();
-
-        if (!string.IsNullOrWhiteSpace(controlCenterId))
-            query = query.Where(r => r.ControlCenterId == controlCenterId);
-
-        if (routeNr.HasValue)
-            query = query.Where(r => r.RouteNr == routeNr.Value);
-
-        if (!string.IsNullOrWhiteSpace(routeVariant))
-            query = query.Where(r => r.RouteVariant == routeVariant);
 
         return await query
             .OrderBy(r => r.ControlCenterId)
@@ -46,18 +24,13 @@ public class RouteService : IRouteService
             .ToListAsync();
     }
 
-    public async Task<AdHoc_SpeechSynthesizer.Models.CompanyContext.Route?> GetByKeyAsync(
-        string controlCenterId,
-        int versionNr,
-        int routeNr,
-        string routeVariant)
+    public async Task<IEnumerable<int>> GetAllRouteNumbersAsync()
     {
         return await _db.Routes
             .AsNoTracking()
-            .FirstOrDefaultAsync(r =>
-                r.ControlCenterId == controlCenterId &&
-                r.VersionNr == versionNr &&
-                r.RouteNr == routeNr &&
-                r.RouteVariant == routeVariant);
+            .Select(r => r.RouteNr)
+            .Distinct()
+            .OrderBy(nr => nr)
+            .ToListAsync();
     }
 }

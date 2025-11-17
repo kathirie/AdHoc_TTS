@@ -8,6 +8,4 @@ public class Platform
     public int LocationNr { get; set; }
     public int PlatformNr { get; set; }
     public string ControlCenterId { get; set; } = null!;
-
-    public string? Name { get; set; }
 }

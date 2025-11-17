@@ -24,14 +24,14 @@ public static class TtsModelSeeder
         const string sql = @"
                 IF NOT EXISTS (SELECT 1 FROM [dbo].[TtsModel] WHERE Provider = 'azure')
                 BEGIN
-                    INSERT INTO [dbo].[TtsModel] (ModelId, Provider, Name, IsActive, CreatedAt, UpdatedAt)
-                    VALUES (NEWID(), 'azure', 'Azure Neural TTS', 1, SYSUTCDATETIME(), SYSUTCDATETIME())
+                    INSERT INTO [dbo].[TtsModel] (ModelId, Provider, Name)
+                    VALUES (NEWID(), 'azure', 'Azure Neural TTS')
                 END
 
                 IF NOT EXISTS (SELECT 1 FROM [dbo].[TtsModel] WHERE Provider = 'system.speech')
                 BEGIN
-                    INSERT INTO [dbo].[TtsModel] (ModelId, Provider, Name, IsActive, CreatedAt, UpdatedAt)
-                    VALUES (NEWID(), 'system.speech', 'System.Speech', 1, SYSUTCDATETIME(), SYSUTCDATETIME())
+                    INSERT INTO [dbo].[TtsModel] (ModelId, Provider, Name)
+                    VALUES (NEWID(), 'system.speech', 'System.Speech')
                 END
                 ";
 

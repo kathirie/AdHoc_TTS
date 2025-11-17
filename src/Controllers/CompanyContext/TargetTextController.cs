@@ -21,16 +21,5 @@ public class TargetTextController : ControllerBase
         var frontTexts = await _service.GetAllFrontTextsAsync();
         return Ok(frontTexts);
     }
-
-    // api/TargetText/ControlCenter/Version/TextNr
-    [HttpGet("{controlCenterId}/{versionNr:int}/{targetTextNr:int}")]
-    public async Task<IActionResult> GetByKey(
-        string controlCenterId,
-        int versionNr,
-        int targetTextNr)
-    {
-        var text = await _service.GetByKeyAsync(controlCenterId, versionNr, targetTextNr);
-        return text is null ? NotFound() : Ok(text);
-    }
 }
 

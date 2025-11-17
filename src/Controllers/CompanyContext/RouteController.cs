@@ -22,28 +22,5 @@ namespace AdHoc_SpeechSynthesizer.Controllers.CompanyContext;
             var routeNumbers = await _service.GetAllRouteNumbersAsync();
             return Ok(routeNumbers);
         }
-
-        // api/Route?controlCenterId=CC01&routeNr=10&routeVariant=A
-        [HttpGet]
-        public async Task<IActionResult> GetAll(
-            [FromQuery] string? controlCenterId = null,
-            [FromQuery] int? routeNr = null,
-            [FromQuery] string? routeVariant = null)
-        {
-            var routes = await _service.GetAllAsync(controlCenterId, routeNr, routeVariant);
-            return Ok(routes);
-        }
-
-        // api/Route/ControlCenter/Version/RouteNr/Variant
-        [HttpGet("{controlCenterId}/{versionNr:int}/{routeNr:int}/{routeVariant}")]
-        public async Task<IActionResult> GetByKey(
-            string controlCenterId,
-            int versionNr,
-            int routeNr,
-            string routeVariant)
-        {
-            var route = await _service.GetByKeyAsync(controlCenterId, versionNr, routeNr, routeVariant);
-            return route is null ? NotFound() : Ok(route);
-        }
     }
 

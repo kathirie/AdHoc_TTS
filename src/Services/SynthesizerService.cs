@@ -28,7 +28,7 @@ public class SynthesisService : ISynthesisService
         _validator = validator;
     }
 
-    // raw SSML → WAV
+    // SSML → WAV
     public async Task<byte[]> SynthesizeAsync(SynthesisRequest req)
     {
         if (string.IsNullOrWhiteSpace(req.SsmlContent))
@@ -43,7 +43,7 @@ public class SynthesisService : ISynthesisService
                 $"Rendered SSML is not valid.\n{errors}");
         }
 
-        // Load model
+        // Load TTSmodel
         var model = await _db.TtsModels.AsNoTracking()
             .FirstOrDefaultAsync(m => m.ModelId == req.ModelId);
 
@@ -80,7 +80,7 @@ public class SynthesisService : ISynthesisService
         return wav;
     }
 
-    // Template → SSML → reuse Synthesize from SSML
+    // Template → SSML → WAV
     public async Task<byte[]> SynthesizeFromTemplateAsync(SynthesizeFromTemplateRequest req)
     {
         // Load MessageTemplate
@@ -91,7 +91,7 @@ public class SynthesisService : ISynthesisService
         if (template == null)
             throw new ArgumentException($"MessageTemplate with id '{req.TemplateId}' not found.");
 
-        // prepare dictionaries
+        // prepare dictionaries for placeholders
         var sequenceValues = new Dictionary<string, IEnumerable<string>>();
 
         // RefLocationNames

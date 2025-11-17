@@ -13,6 +13,16 @@ public class TargetTextService : ITargetTextService
     {
         _db = db;
     }
+    public async Task<IEnumerable<TargetText>> GetAllAsync()
+    {
+        var query = _db.TargetTexts.AsNoTracking().AsQueryable();
+
+        return await query
+            .OrderBy(t => t.ControlCenterId)
+            .ThenBy(t => t.VersionNr)
+            .ThenBy(t => t.TargetTextNr)
+            .ToListAsync();
+    }
 
     public async Task<IEnumerable<string>> GetAllFrontTextsAsync()
     {
@@ -23,29 +33,5 @@ public class TargetTextService : ITargetTextService
             .Distinct()
             .OrderBy(text => text)
             .ToListAsync();
-    }
-
-    public async Task<IEnumerable<TargetText>> GetAllAsync(string? controlCenterId = null)
-    {
-        var query = _db.TargetTexts.AsNoTracking().AsQueryable();
-
-        if (!string.IsNullOrWhiteSpace(controlCenterId))
-            query = query.Where(t => t.ControlCenterId == controlCenterId);
-
-        return await query
-            .OrderBy(t => t.ControlCenterId)
-            .ThenBy(t => t.VersionNr)
-            .ThenBy(t => t.TargetTextNr)
-            .ToListAsync();
-    }
-
-    public async Task<TargetText?> GetByKeyAsync(string controlCenterId, int versionNr, int targetTextNr)
-    {
-        return await _db.TargetTexts
-            .AsNoTracking()
-            .FirstOrDefaultAsync(t =>
-                t.ControlCenterId == controlCenterId &&
-                t.VersionNr == versionNr &&
-                t.TargetTextNr == targetTextNr);
     }
 }
