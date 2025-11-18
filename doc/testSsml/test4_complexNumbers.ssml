@@ -1,0 +1,25 @@
+<speak xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="de-DE">
+  <voice name="de-AT-JonasNeural">
+
+    Wegen {Freitext} kommt es am
+    <say-as interpret-as="date" format="dmy">27.10.2025</say-as>
+    zu Änderungen im Fahrplan.
+    Betroffen sind die Linien
+    <say-as interpret-as="digits">{Route.RouteNr}</say-as>,
+    <say-as interpret-as="digits">{Route.RouteNr}</say-as>
+    und
+    <say-as interpret-as="digits">{Route.RouteNr}</say-as>.
+    <break />
+
+    Die Abfahrt erfolgt nun von Bereich
+    <say-as interpret-as="characters">A-B</say-as>.
+    <break />
+
+    Es kann dabei zu Verspätungen zwischen
+    <say-as interpret-as="cardinal">5</say-as>
+    und
+    <say-as interpret-as="cardinal">10</say-as>
+    Minuten kommen.
+    
+  </voice>
+</speak>

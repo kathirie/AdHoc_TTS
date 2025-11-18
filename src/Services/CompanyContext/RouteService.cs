@@ -1,36 +1,25 @@
-﻿using AdHoc_SpeechSynthesizer.Data;
+﻿using AdHoc_SpeechSynthesizer.Dal.Interface;
 using AdHoc_SpeechSynthesizer.Services.Interfaces.CompanyContext;
-using Microsoft.EntityFrameworkCore;
 
 namespace AdHoc_SpeechSynthesizer.Services.CompanyContext;
 
 public class RouteService : IRouteService
 {
-    private readonly CompanyDbContext _db;
+    private readonly IRouteDao _dao;
 
-    public RouteService(CompanyDbContext db)
+    public RouteService(IRouteDao dao)
     {
-        _db = db;
+        _dao = dao;
     }
 
-    public async Task<IEnumerable<AdHoc_SpeechSynthesizer.Models.CompanyContext.Route>> GetAllAsync()
-    {
-        var query = _db.Routes.AsNoTracking().AsQueryable();
+    public Task<IEnumerable<Domain.Route>> GetAllAsync()
+        => _dao.FindAllAsync();
 
-        return await query
-            .OrderBy(r => r.ControlCenterId)
-            .ThenBy(r => r.RouteNr)
-            .ThenBy(r => r.RouteVariant)
-            .ToListAsync();
-    }
+    public Task<IEnumerable<int>> GetAllRouteNumbersAsync()
+        => _dao.FindAllRouteNumbersAsync();
 
-    public async Task<IEnumerable<int>> GetAllRouteNumbersAsync()
+    Task<IEnumerable<Domain.Route>> IRouteService.GetAllAsync()
     {
-        return await _db.Routes
-            .AsNoTracking()
-            .Select(r => r.RouteNr)
-            .Distinct()
-            .OrderBy(nr => nr)
-            .ToListAsync();
+        throw new NotImplementedException();
     }
 }

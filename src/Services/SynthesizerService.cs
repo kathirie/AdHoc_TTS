@@ -1,30 +1,34 @@
-﻿using AdHoc_SpeechSynthesizer.Data;
+﻿using AdHoc_SpeechSynthesizer.Common.Templating;
 using AdHoc_SpeechSynthesizer.Common.Validation;
-
+using AdHoc_SpeechSynthesizer.Dal.Interface;
+using AdHoc_SpeechSynthesizer.Data;
+using AdHoc_SpeechSynthesizer.Domain;
 using AdHoc_SpeechSynthesizer.Models.Requests;
 using AdHoc_SpeechSynthesizer.Services.Interfaces;
 using AdHoc_SpeechSynthesizer.Services.Synthesizers;
 using Microsoft.EntityFrameworkCore;
-using AdHoc_SpeechSynthesizer.Common.Templating;
 
 namespace AdHoc_SpeechSynthesizer.Services;
 
 public class SynthesisService : ISynthesisService
 {
-    private readonly AppDbContext _db;
+    private readonly ITtsModelDao _modelDao;
+    private readonly ITtsVoiceDao _voiceDao;
+    private readonly IMessageTemplateDao _templateDao;
     private readonly IConfiguration _config;
-    private readonly IServiceProvider _serviceProvider;
     private readonly SsmlValidator _validator;
 
     public SynthesisService(
-        AppDbContext db,
+        ITtsModelDao modelDao,
+        ITtsVoiceDao voiceDao,
+        IMessageTemplateDao templateDao,
         IConfiguration config,
-        IServiceProvider serviceProvider,
         SsmlValidator validator)
     {
-        _db = db;
+        _modelDao = modelDao;
+        _voiceDao = voiceDao;
+        _templateDao = templateDao;
         _config = config;
-        _serviceProvider = serviceProvider;
         _validator = validator;
     }
 
@@ -34,33 +38,33 @@ public class SynthesisService : ISynthesisService
         if (string.IsNullOrWhiteSpace(req.SsmlContent))
             throw new ArgumentException("SSML content cannot be empty.");
 
-        // Validate SSML
+        // SSML validation
         var validation = _validator.Validate(req.SsmlContent);
         if (!validation.IsXmlWellFormed || !validation.IsSchemaValid)
         {
             var errors = string.Join(Environment.NewLine, validation.Errors);
-            throw new InvalidOperationException(
-                $"Rendered SSML is not valid.\n{errors}");
+            throw new InvalidOperationException($"Rendered SSML is not valid.\n{errors}");
         }
 
-        // Load TTSmodel
-        var model = await _db.TtsModels.AsNoTracking()
-            .FirstOrDefaultAsync(m => m.ModelId == req.ModelId);
+        // get model
+        var model = await _modelDao.FindByIdAsync(req.ModelId) ?? throw new ArgumentException("Invalid TTS model ID.");
 
-        if (model is null)
-            throw new ArgumentException("Invalid TTS model ID.");
+        // get voice
+        TtsVoice? voice;
 
-        // Load or fallback to default voice
-        var voice = await _db.TtsVoices.AsNoTracking()
-            .FirstOrDefaultAsync(v =>
-                (req.VoiceId != null && v.VoiceId == req.VoiceId) ||
-                (req.VoiceId == null && v.ModelId == model.ModelId && v.IsActive));
+        if (req.VoiceId != null)
+        {
+            voice = await _voiceDao.FindByIdAsync(req.VoiceId.Value);
+        }
+        else
+        {
+            voice = await _voiceDao.FindDefaultForModelAsync(model.ModelId);
+        }
 
         if (voice is null)
             throw new InvalidOperationException("No valid voice found for selected model.");
 
-
-        // Select synthesizer implementation via interface
+        // select synthesizer
         ITtsSynthesizer synthesizer = model.Provider switch
         {
             "azure" => new AzureSynthesizer(
@@ -73,52 +77,47 @@ public class SynthesisService : ISynthesisService
             _ => throw new NotSupportedException($"Unknown model provider '{model.Provider}'.")
         };
 
-        // Synthesize
-        var wav = await synthesizer.SynthesizeToWavAsync(req.SsmlContent);
-        synthesizer.Dispose();
-
-        return wav;
+        try
+        {
+            // SSML → WAV
+            var wav = await synthesizer.SynthesizeToWavAsync(req.SsmlContent);
+            return wav;
+        }
+        finally
+        {
+            synthesizer.Dispose();
+        }
     }
 
     // Template → SSML → WAV
     public async Task<byte[]> SynthesizeFromTemplateAsync(SynthesizeFromTemplateRequest req)
     {
-        // Load MessageTemplate
-        var template = await _db.MessageTemplates
-            .AsNoTracking()
-            .FirstOrDefaultAsync(t => t.TemplateId == req.TemplateId);
+        // load template
+        var template = await _templateDao.FindByIdAsync(req.TemplateId) ?? throw new ArgumentException($"MessageTemplate with id '{req.TemplateId}' not found.");
 
-        if (template == null)
-            throw new ArgumentException($"MessageTemplate with id '{req.TemplateId}' not found.");
-
-        // prepare dictionaries for placeholders
+        // prepare placeholders
         var sequenceValues = new Dictionary<string, IEnumerable<string>>();
 
-        // RefLocationNames
         if (req.RefLocationNames?.Any() == true)
-            sequenceValues["Location.RefLocationName"] = req.RefLocationNames;
+            sequenceValues["Location.RefLocationName"] = req.RefLocationNames!;
 
-        // PlatformNames 
         if (req.PlatformNumbers?.Any() == true)
-            sequenceValues["Platform.PlatformNr"] = req.PlatformNumbers
-                .Select(n => n?.ToString())
+            sequenceValues["Platform.PlatformNr"] = req.PlatformNumbers!
+                .Select(n => n?.ToString() ?? string.Empty)
                 .ToList();
 
-        // RouteNrs (vermutlich int? → ToString)
         if (req.RouteNrs?.Any() == true)
-            sequenceValues["Route.RouteNr"] = req.RouteNrs
-                .Select(n => n?.ToString())
+            sequenceValues["Route.RouteNr"] = req.RouteNrs!
+                .Select(n => n?.ToString() ?? string.Empty)
                 .ToList();
 
-        // FrontTexts
         if (req.FrontTexts?.Any() == true)
-            sequenceValues["TargetText.FrontText"] = req.FrontTexts;
+            sequenceValues["TargetText.FrontText"] = req.FrontTexts!;
 
-        // FreeTexts
         if (req.FreeTexts?.Any() == true)
-            sequenceValues["Freitext"] = req.FreeTexts;
+            sequenceValues["Freitext"] = req.FreeTexts!;
 
-        // Rendern
+        // render template
         var ssml = TemplateRenderer.Render(template.SsmlContent, sequenceValues);
 
         // SSML → WAV

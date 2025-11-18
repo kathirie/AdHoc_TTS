@@ -1,4 +1,4 @@
-﻿namespace AdHoc_SpeechSynthesizer.Models.AppContext;
+﻿namespace AdHoc_SpeechSynthesizer.Domain;
 
 public class TtsModel
 {

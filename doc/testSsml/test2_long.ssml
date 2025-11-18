@@ -1,0 +1,20 @@
+<speak xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="de-DE">
+  <voice name="de-AT-JonasNeural">
+    Aufgrund von Bauarbeiten werden die Haltestellen
+    {Location.RefLocationName} und {Location.RefLocationName}
+    heute nicht bedient.
+    <break />
+
+    Stattdessen wird eine Ersatzhaltestelle in
+    {Location.RefLocationName} eingerichtet.
+    <break />
+
+    Die Fahrt der Linie
+    <say-as interpret-as="digits">{Route.RouteNr}</say-as>
+    beginnt am Bereich
+    <say-as interpret-as="cardinal">{Platform.PlatformNr}</say-as>.
+    <break />
+
+    Weitere Informationen zu aktuellen Fahrplanänderungen erhalten Sie online.
+  </voice>
+</speak>

@@ -1,4 +1,4 @@
-﻿using AdHoc_SpeechSynthesizer.Models.AppContext;
+﻿using AdHoc_SpeechSynthesizer.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdHoc_SpeechSynthesizer.Data;

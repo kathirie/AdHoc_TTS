@@ -1,5 +1,4 @@
-﻿
-namespace AdHoc_SpeechSynthesizer.Models.CompanyContext;
+﻿namespace AdHoc_SpeechSynthesizer.Domain;
 
 public class Platform
 {

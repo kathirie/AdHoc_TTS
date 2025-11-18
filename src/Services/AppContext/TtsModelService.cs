@@ -1,32 +1,21 @@
-﻿using AdHoc_SpeechSynthesizer.Data;
-using AdHoc_SpeechSynthesizer.Models.AppContext;
+﻿using AdHoc_SpeechSynthesizer.Dal.Interface;
+using AdHoc_SpeechSynthesizer.Domain;
 using AdHoc_SpeechSynthesizer.Services.Interfaces.AppContext;
-using Microsoft.EntityFrameworkCore;
 
 namespace AdHoc_SpeechSynthesizer.Services.AppContext;
 
 public class TtsModelService : ITtsModelService
 {
-    private readonly AppDbContext _db;
+    private readonly ITtsModelDao _dao;
 
-    public TtsModelService(AppDbContext db)
+    public TtsModelService(ITtsModelDao dao)
     {
-        _db = db;
+        _dao = dao;
     }
 
     public async Task<IEnumerable<TtsModel>> GetAllAsync()
-    {
-        return await _db.TtsModels
-            .AsNoTracking()
-            .OrderBy(m => m.Provider)
-            .ThenBy(m => m.Name)
-            .ToListAsync();
-    }
+        => await _dao.FindAllAsync();
 
     public async Task<TtsModel?> GetByIdAsync(Guid id)
-    {
-        return await _db.TtsModels
-            .AsNoTracking()
-            .FirstOrDefaultAsync(m => m.ModelId == id);
-    }
+        => await _dao.FindByIdAsync(id);
 }

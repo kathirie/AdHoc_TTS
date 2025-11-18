@@ -1,0 +1,16 @@
+<speak xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="de-DE">
+  <voice name="de-AT-JonasNeural">
+
+    Aufgrund von {Freitext} wird die Fahrt der Linie
+    <say-as interpret-as="digits">{Route.RouteNr}</say-as>
+    zwischen {Location.RefLocationName} und {Location.RefLocationName}
+    als Schienenersatzverkehr geführt.
+    <break />
+
+    Die Haltestellen {Location.RefLocationName}, {Location.RefLocationName}
+    sowie {Location.RefLocationName} entfallen vollständig.
+
+    Weitere Informationen erhalten Sie unter
+    <say-as interpret-as="characters">www.tts-oevv.at</say-as>.
+  </voice>
+</speak>

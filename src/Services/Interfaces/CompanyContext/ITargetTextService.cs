@@ -1,4 +1,4 @@
-﻿using AdHoc_SpeechSynthesizer.Models.CompanyContext;
+﻿using AdHoc_SpeechSynthesizer.Domain;
 
 namespace AdHoc_SpeechSynthesizer.Services.Interfaces.CompanyContext;
 

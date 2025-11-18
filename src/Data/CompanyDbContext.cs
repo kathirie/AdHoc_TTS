@@ -1,4 +1,4 @@
-﻿using AdHoc_SpeechSynthesizer.Models.CompanyContext;
+﻿using AdHoc_SpeechSynthesizer.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdHoc_SpeechSynthesizer.Data;
@@ -12,7 +12,7 @@ public class CompanyDbContext : DbContext
 
     public DbSet<Location> Locations { get; set; } = null!;
     public DbSet<Platform> Platforms { get; set; } = null!;
-    public DbSet<AdHoc_SpeechSynthesizer.Models.CompanyContext.Route> Routes { get; set; } = null!;
+    public DbSet<Domain.Route> Routes { get; set; } = null!;
     public DbSet<TargetText> TargetTexts { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ public class CompanyDbContext : DbContext
 
         modelBuilder.Entity<Location>().ToTable("Location");
         modelBuilder.Entity<Platform>().ToTable("Platform");
-        modelBuilder.Entity<AdHoc_SpeechSynthesizer.Models.CompanyContext.Route>().ToTable("Route");
+        modelBuilder.Entity<Domain.Route>().ToTable("Route");
         modelBuilder.Entity<TargetText>().ToTable("TargetText");
 
         modelBuilder.Entity<Location>()
@@ -30,7 +30,7 @@ public class CompanyDbContext : DbContext
         modelBuilder.Entity<Platform>()
             .HasKey(p => new { p.VersionNr, p.LocationTypeNr, p.LocationNr, p.PlatformNr, p.ControlCenterId });
 
-        modelBuilder.Entity<AdHoc_SpeechSynthesizer.Models.CompanyContext.Route>()
+        modelBuilder.Entity<Domain.Route>()
             .HasKey(r => new { r.VersionNr, r.RouteNr, r.RouteVariant, r.ControlCenterId });
 
         modelBuilder.Entity<TargetText>()

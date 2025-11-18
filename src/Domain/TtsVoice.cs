@@ -1,12 +1,9 @@
-﻿namespace AdHoc_SpeechSynthesizer.Models.AppContext;
+﻿namespace AdHoc_SpeechSynthesizer.Domain;
 
 public class TtsVoice
 {
     public Guid VoiceId { get; set; }
-
-    // FK to the model that owns this voice.
     public Guid ModelId { get; set; }
-
     public string Provider { get; set; } = default!;
     public string ProviderVoiceId { get; set; } = default!;
     public string DisplayName { get; set; } = default!;

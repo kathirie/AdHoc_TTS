@@ -89,7 +89,7 @@ public static class TtsVoiceSeeder
         int count = 0;
         foreach (var v in germanVoices)
         {
-            var stylesJson = JsonSerializer.Serialize(v.StyleList ?? new List<string>());
+            var stylesJson = JsonSerializer.Serialize(v.StyleList ?? []);
             count += await conn.ExecuteAsync(insertSql, new
             {
                 ModelId = modelId.Value,

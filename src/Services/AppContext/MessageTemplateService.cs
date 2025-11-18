@@ -1,49 +1,35 @@
 ﻿using AdHoc_SpeechSynthesizer.Common.Templating;
-using AdHoc_SpeechSynthesizer.Data;
-using AdHoc_SpeechSynthesizer.Models.AppContext;
+using AdHoc_SpeechSynthesizer.Dal.Interface;
+using AdHoc_SpeechSynthesizer.Domain;
 using AdHoc_SpeechSynthesizer.Models.Responses;
 using AdHoc_SpeechSynthesizer.Services.Interfaces.AppContext;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata.Ecma335;
+
 
 
 namespace AdHoc_SpeechSynthesizer.Services.AppContext;
 
 public class MessageTemplateService : IMessageTemplateService
 {
-    private readonly AppDbContext _db;
+    private readonly IMessageTemplateDao _dao;
 
-    public MessageTemplateService(AppDbContext db)
+    public MessageTemplateService(IMessageTemplateDao dao)
     {
-        _db = db;
+        _dao = dao;
     }
 
     public async Task<IEnumerable<MessageTemplate>> GetAllAsync()
-    {
-        return await _db.MessageTemplates
-                        .AsNoTracking()
-                        .ToListAsync();
-    }
+        => await _dao.FindAllAsync();
 
     public async Task<MessageTemplate?> GetByIdAsync(Guid id)
-    {
-        return await _db.MessageTemplates
-                        .AsNoTracking()
-                        .FirstOrDefaultAsync(v => v.TemplateId == id);
-    }
+        => await _dao.FindByIdAsync(id);
 
     public async Task<IEnumerable<TemplatePlaceholderResponse?>> GetPlaceholdersByIdAsync(Guid id)
     {
-        var template = await GetByIdAsync(id);
+        var template = await _dao.FindByIdAsync(id);
         if (template is null)
-        {
-            return null; 
-        }
+            return Enumerable.Empty<TemplatePlaceholderResponse>();
 
-        var placeholderNames = TemplatePlaceholderScanner.GetPlaceholders(template.SsmlContent);
-
-        return placeholderNames
-        .Select(name => new TemplatePlaceholderResponse { Name = name })
-        .ToList();
+        var names = TemplatePlaceholderScanner.GetPlaceholders(template.SsmlContent);
+        return names.Select(n => new TemplatePlaceholderResponse { Name = n });
     }
 }

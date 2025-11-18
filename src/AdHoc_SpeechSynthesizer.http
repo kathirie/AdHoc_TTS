@@ -5,13 +5,11 @@
 GET https://localhost:7275/api/TtsModels
 Accept: application/json
 
-###
 
 ### Get all available voices
 GET https://localhost:7275/api/TtsVoices
 Accept: application/json
 
-###
 
 ### Get voices for Windows
 GET https://localhost:7275/api/TtsModels/D229008E-A9B5-410C-B794-274763DACA4E/voices
@@ -21,7 +19,6 @@ Accept: application/json
 GET https://localhost:7275/api/TtsModels/7FF02809-B650-45C1-B4A8-3DE02DAEBC1C/voices
 Accept: application/json
 
-###
 
 ### Synthesize speech (System.Speech)
 POST https://localhost:7275/api/Synthesis/from-ssml
@@ -173,30 +170,12 @@ Accept: application/json
 GET https://localhost:7275/api/Location/RefLocationNames
 Accept: application/json
 
-### Get all locations in one control center
-GET https://localhost:7275/api/Location?controlCenterId=BLA
-Accept: application/json
-
-### Get single location
-GET https://localhost:7275/api/Location/BLA/2093/1/136
-Accept: application/json
-
-
 
 
 
 ### all platforms numbers
 GET https://localhost:7275/api/Platform/platformnumbers
 Accept: application/json
-
-### all platforms for a location
-GET https://localhost:7275/api/Platform/location/CC01/1/10/123
-Accept: application/json
-
-### single platform
-GET https://localhost:7275/api/Platform/CC01/1/10/123/2
-Accept: application/json
-
 
 
 
@@ -207,12 +186,6 @@ GET https://localhost:7275/api/Route
 ### All RouteNrs
 GET https://localhost:7275/api/Route/RouteNrs
 
-### Filtered
-GET https://localhost:7275/api/Route?controlCenterId=BLA&routeNr=120
-
-### Single route by key
-GET https://localhost:7275/api/Route/BLA/2093/120/1
-
 
 
 
@@ -222,12 +195,4 @@ Accept: application/json
 
 ### Get all target text FrontTexts
 GET https://localhost:7275/api/TargetText/fronttexts
-Accept: application/json
-
-### Filter by control center
-GET https://localhost:7275/api/TargetText?controlCenterId=BLA
-Accept: application/json
-
-### Get single target text
-GET https://localhost:7275/api/TargetText/BLA/2093/6
 Accept: application/json

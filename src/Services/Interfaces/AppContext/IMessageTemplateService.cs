@@ -1,4 +1,4 @@
-﻿using AdHoc_SpeechSynthesizer.Models.AppContext;
+﻿using AdHoc_SpeechSynthesizer.Domain;
 using AdHoc_SpeechSynthesizer.Models.Responses;
 
 namespace AdHoc_SpeechSynthesizer.Services.Interfaces.AppContext;

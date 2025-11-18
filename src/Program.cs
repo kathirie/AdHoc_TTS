@@ -1,12 +1,13 @@
-using AdHoc_SpeechSynthesizer.Data;
 using AdHoc_SpeechSynthesizer.Common.Validation;
+using AdHoc_SpeechSynthesizer.Dal.Ado;
+using AdHoc_SpeechSynthesizer.Dal.Interface;
+using AdHoc_SpeechSynthesizer.Data;
 using AdHoc_SpeechSynthesizer.Services;
 using AdHoc_SpeechSynthesizer.Services.AppContext;
 using AdHoc_SpeechSynthesizer.Services.CompanyContext;
 using AdHoc_SpeechSynthesizer.Services.Interfaces;
 using AdHoc_SpeechSynthesizer.Services.Interfaces.AppContext;
 using AdHoc_SpeechSynthesizer.Services.Interfaces.CompanyContext;
-
 using Microsoft.EntityFrameworkCore;
 
 // https://localhost:7275/synthesize.html
@@ -27,13 +28,25 @@ builder.Services.AddDbContext<CompanyDbContext>(options =>
 
 builder.Services.AddSingleton<SsmlValidator>();
 
-builder.Services.AddScoped<ITtsModelService, TtsModelService>(); 
-builder.Services.AddScoped<ITtsVoiceService, TtsVoiceService>();
-builder.Services.AddScoped<IMessageTemplateService, MessageTemplateService>();
+// DAOs
+builder.Services.AddScoped<IMessageTemplateDao, MessageTemplateDao>();
+builder.Services.AddScoped<IMessageTemplateDao, MessageTemplateDao>();
+builder.Services.AddScoped<ITtsVoiceDao, TtsVoiceDao>();
 
+builder.Services.AddScoped<ILocationDao, LocationDao>();
+builder.Services.AddScoped<IRouteDao, RouteDao>();
+builder.Services.AddScoped<IPlatformDao, PlatformDao>();
+builder.Services.AddScoped<ITargetTextDao, TargetTextDao>();
+
+
+// Services
+builder.Services.AddScoped<ITtsModelService, TtsModelService>();
+builder.Services.AddScoped<IMessageTemplateService, MessageTemplateService>();
+builder.Services.AddScoped<ITtsVoiceService, TtsVoiceService>();
+
+builder.Services.AddScoped<IRouteService, RouteService>();
 builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<IPlatformService, PlatformService>();
-builder.Services.AddScoped<IRouteService, RouteService>();
 builder.Services.AddScoped<ITargetTextService, TargetTextService>();
 
 builder.Services.AddScoped<ISynthesisService, SynthesisService>();

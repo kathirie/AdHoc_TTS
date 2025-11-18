@@ -1,37 +1,21 @@
-﻿using AdHoc_SpeechSynthesizer.Data;
-using AdHoc_SpeechSynthesizer.Models.CompanyContext;
+﻿using AdHoc_SpeechSynthesizer.Dal.Interface;
+using AdHoc_SpeechSynthesizer.Domain;
 using AdHoc_SpeechSynthesizer.Services.Interfaces.CompanyContext;
-using Microsoft.EntityFrameworkCore;
 
 namespace AdHoc_SpeechSynthesizer.Services.CompanyContext;
 
 public class TargetTextService : ITargetTextService
 {
-    private readonly CompanyDbContext _db;
+    private readonly ITargetTextDao _dao;
 
-    public TargetTextService(CompanyDbContext db)
+    public TargetTextService(ITargetTextDao dao)
     {
-        _db = db;
-    }
-    public async Task<IEnumerable<TargetText>> GetAllAsync()
-    {
-        var query = _db.TargetTexts.AsNoTracking().AsQueryable();
-
-        return await query
-            .OrderBy(t => t.ControlCenterId)
-            .ThenBy(t => t.VersionNr)
-            .ThenBy(t => t.TargetTextNr)
-            .ToListAsync();
+        _dao = dao;
     }
 
-    public async Task<IEnumerable<string>> GetAllFrontTextsAsync()
-    {
-        return await _db.TargetTexts
-            .AsNoTracking()
-            .Where(t => t.FrontText != null && t.FrontText != "")
-            .Select(t => t.FrontText!)
-            .Distinct()
-            .OrderBy(text => text)
-            .ToListAsync();
-    }
+    public Task<IEnumerable<TargetText>> GetAllAsync()
+        => _dao.FindAllAsync();
+
+    public Task<IEnumerable<string>> GetAllFrontTextsAsync()
+        => _dao.FindAllFrontTextsAsync();
 }
