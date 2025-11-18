@@ -43,7 +43,7 @@ namespace AdHoc_SpeechSynthesizer.Dal.Ado
         {
             return await _db.TtsVoices
                 .AsNoTracking()
-                .Where(v => v.ModelId == modelId && v.IsActive)
+                .Where(v => v.ModelId == modelId)
                 .OrderBy(v => v.DisplayName) 
                 .FirstOrDefaultAsync();
         }

@@ -1,43 +1,39 @@
-﻿using Dapper;
-using Microsoft.Data.SqlClient;
+﻿using AdHoc_SpeechSynthesizer.Data;
+using AdHoc_SpeechSynthesizer.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdHoc_SpeechSynthesizer.Services.AppContext;
 
 public static class TtsModelSeeder
 {
-    // Seeds the TtsModel table with default entries for Azure and System.Speech.
     public static async Task SeedAsync(IServiceProvider services)
     {
         using var scope = services.CreateScope();
-        var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-        var connectionString = config.GetConnectionString("DefaultConnection");
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-        if (string.IsNullOrWhiteSpace(connectionString))
-            throw new InvalidOperationException("No connection string configured.");
+        // Azure Model
+        if (!await db.TtsModels.AnyAsync(m => m.Provider == "azure"))
+        {
+            db.TtsModels.Add(new TtsModel
+            {
+                ModelId = Guid.NewGuid(),
+                Provider = "azure",
+                Name = "Azure Neural TTS"
+            });
+        }
 
-        await SeedModelAsync(connectionString);
-    }
+        // System.Speech Model
+        if (!await db.TtsModels.AnyAsync(m => m.Provider == "system.speech"))
+        {
+            db.TtsModels.Add(new TtsModel
+            {
+                ModelId = Guid.NewGuid(),
+                Provider = "system.speech",
+                Name = "System.Speech"
+            });
+        }
 
-    private static async Task SeedModelAsync(string connectionString)
-    {
-        const string sql = @"
-                IF NOT EXISTS (SELECT 1 FROM [dbo].[TtsModel] WHERE Provider = 'azure')
-                BEGIN
-                    INSERT INTO [dbo].[TtsModel] (ModelId, Provider, Name)
-                    VALUES (NEWID(), 'azure', 'Azure Neural TTS')
-                END
-
-                IF NOT EXISTS (SELECT 1 FROM [dbo].[TtsModel] WHERE Provider = 'system.speech')
-                BEGIN
-                    INSERT INTO [dbo].[TtsModel] (ModelId, Provider, Name)
-                    VALUES (NEWID(), 'system.speech', 'System.Speech')
-                END
-                ";
-
-        using var conn = new SqlConnection(connectionString);
-        var affected = await conn.ExecuteAsync(sql);
-
-        Console.WriteLine($"TtsModelSeeder: Default models ensured (affected {affected} rows).");
+        await db.SaveChangesAsync();
+        Console.WriteLine("EfTtsModelSeeder: Default models ensured via EF.");
     }
 }

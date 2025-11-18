@@ -1,161 +1,162 @@
 ﻿using System.Speech.Synthesis;
 using System.Text.Json;
-using Dapper;
-using Microsoft.Data.SqlClient;
+using AdHoc_SpeechSynthesizer.Data;
+using AdHoc_SpeechSynthesizer.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace AdHoc_SpeechSynthesizer.Services.AppContext;
 
 public static class TtsVoiceSeeder
 {
-    // Entry point for seeding all voices (Azure + SAPI).
     public static async Task SeedAsync(IServiceProvider services)
     {
         using var scope = services.CreateScope();
         var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-        var connectionString = config.GetConnectionString("DefaultConnection");
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-        if (string.IsNullOrWhiteSpace(connectionString))
-            throw new InvalidOperationException("No connection string configured.");
+        await EnsureModelsAsync(db);
 
         var azureKey = config["SPEECH_KEY"];
         var azureRegion = config["SPEECH_REGION"];
 
         if (!string.IsNullOrWhiteSpace(azureKey) && !string.IsNullOrWhiteSpace(azureRegion))
         {
-            Console.WriteLine("Seeding Azure voices...");
-            await SeedAzureVoicesAsync(connectionString, azureKey, azureRegion);
-        }
-        else
-        {
-            Console.WriteLine("Azure Speech key or region not set — skipping Azure voice seeding.");
+            await SeedAzureVoicesAsync(db, azureKey, azureRegion);
         }
 
-        Console.WriteLine("Seeding System.Speech (SAPI) voices...");
-        await SeedSapiVoicesAsync(connectionString);
-
-        Console.WriteLine("Voice seeding finished.");
+        await SeedSapiVoicesAsync(db);
     }
 
-    private const string schema = "dbo";
-
-    // ---------------------- AZURE ----------------------
-    private static async Task SeedAzureVoicesAsync(string connectionString, string key, string region)
+    private static async Task EnsureModelsAsync(AppDbContext db)
     {
-        using var http = new HttpClient();
-        http.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", key);
-        var url = $"https://{region}.tts.speech.microsoft.com/cognitiveservices/voices/list";
-
-        var allVoices = await http.GetFromJsonAsync<List<AzureVoiceResponse>>(url);
-        if (allVoices is null)
+        if (!await db.TtsModels.AnyAsync(m => m.Provider == "azure"))
         {
-            Console.WriteLine("Failed to fetch Azure voices.");
-            return;
-        }
-
-        var germanVoices = allVoices.FindAll(v =>
-            !string.IsNullOrWhiteSpace(v.Locale) &&
-            (v.Locale.Equals("de", StringComparison.OrdinalIgnoreCase) ||
-             v.Locale.StartsWith("de-", StringComparison.OrdinalIgnoreCase)));
-        if (germanVoices is null)
-        {
-            Console.WriteLine("There are no german voices available.");
-            return;
-        }
-
-        using var conn = new SqlConnection(connectionString);
-
-        var modelId = await conn.ExecuteScalarAsync<Guid?>(
-            $"SELECT ModelId FROM [{schema}].[TtsModel] WHERE Provider = @p",
-            new { p = "azure" });
-
-        if (modelId is null)
-        {
-            Console.WriteLine("No 'azure' TTS model found. Run TtsModelSeeder first.");
-            return;
-        }
-
-        var insertSql = $@"
-                IF NOT EXISTS (
-                    SELECT 1 FROM [{schema}].[TtsVoice]
-                    WHERE Provider = 'azure' AND ProviderVoiceId = @ProviderVoiceId
-                )
-                BEGIN
-                    INSERT INTO [{schema}].[TtsVoice]
-                    (VoiceId, ModelId, Provider, ProviderVoiceId, DisplayName, Locale, Gender, VoiceType, SampleRateHertz, StylesJson, Status, IsActive, IsInstalled, CreatedAt, UpdatedAt)
-                    VALUES
-                    (NEWID(), @ModelId, 'azure', @ProviderVoiceId, @DisplayName, @Locale, @Gender, @VoiceType, @SampleRateHertz, @StylesJson, @Status, 1, 0, SYSUTCDATETIME(), SYSUTCDATETIME())
-                END";
-
-        int count = 0;
-        foreach (var v in germanVoices)
-        {
-            var stylesJson = JsonSerializer.Serialize(v.StyleList ?? []);
-            count += await conn.ExecuteAsync(insertSql, new
+            db.TtsModels.Add(new TtsModel
             {
-                ModelId = modelId.Value,
-                ProviderVoiceId = v.ShortName,
-                v.DisplayName,
-                v.Locale,
-                v.Gender,
-                v.VoiceType,
-                SampleRateHertz = int.TryParse(v.SampleRateHertz, out var sr) ? sr : (int?)null,
-                StylesJson = stylesJson,
-                v.Status
+                ModelId = Guid.NewGuid(),
+                Provider = "azure",
+                Name = "Azure Neural TTS"
             });
         }
 
-        Console.WriteLine($"Azure: {germanVoices.Count} voices processed (new inserts: {count}).");
+        if (!await db.TtsModels.AnyAsync(m => m.Provider == "system.speech"))
+        {
+            db.TtsModels.Add(new TtsModel
+            {
+                ModelId = Guid.NewGuid(),
+                Provider = "system.speech",
+                Name = "System.Speech"
+            });
+        }
+
+        await db.SaveChangesAsync();
     }
 
-    // ---------------------- SAPI / SYSTEM.SPEECH ----------------------
-    private static async Task SeedSapiVoicesAsync(string connectionString)
+    // ------------------ Azure Voices ------------------
+    private static async Task SeedAzureVoicesAsync(AppDbContext db, string key, string region)
+    {
+        using var http = new HttpClient();
+        http.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", key);
+
+        var url = $"https://{region}.tts.speech.microsoft.com/cognitiveservices/voices/list";
+
+        var allVoices = await http.GetFromJsonAsync<List<AzureVoiceResponse>>(url);
+        if (allVoices is null) return;
+
+        // only german voices
+        var germanVoices = allVoices
+            .Where(v => !string.IsNullOrWhiteSpace(v.Locale) &&
+                        (v.Locale.Equals("de", StringComparison.OrdinalIgnoreCase) ||
+                         v.Locale.StartsWith("de-", StringComparison.OrdinalIgnoreCase)))
+            .ToList();
+
+        var azureModel = await db.TtsModels
+            .AsNoTracking()
+            .FirstOrDefaultAsync(m => m.Provider == "azure");
+
+        if (azureModel is null)
+        {
+            Console.WriteLine("No 'azure' TTS model found. Run EnsureModelsAsync first.");
+            return;
+        }
+
+        foreach (var v in germanVoices)
+        {
+            var exists = await db.TtsVoices.AnyAsync(x =>
+                x.Provider == "azure" && x.ProviderVoiceId == v.ShortName);
+
+            if (exists)
+                continue;
+
+            var stylesJson = JsonSerializer.Serialize(v.StyleList ?? new List<string>());
+
+            db.TtsVoices.Add(new TtsVoice
+            {
+                VoiceId = Guid.NewGuid(),
+                ModelId = azureModel.ModelId,
+                Provider = "azure",
+                ProviderVoiceId = v.ShortName,
+                DisplayName = v.DisplayName,
+                Locale = v.Locale,
+                Gender = v.Gender,
+                VoiceType = v.VoiceType,
+                SampleRateHertz = int.TryParse(v.SampleRateHertz, out var sr) ? sr : (int?)null,
+                StylesJson = stylesJson,
+                Status = v.Status,
+                IsInstalled = false
+            });
+        }
+
+        await db.SaveChangesAsync();
+        Console.WriteLine($"Azure: {germanVoices.Count} voices processed (new inserts via EF).");
+    }
+
+    // ------------------ System.Speech Voices ------------------
+    private static async Task SeedSapiVoicesAsync(AppDbContext db)
     {
         using var synth = new SpeechSynthesizer();
         var installed = synth.GetInstalledVoices();
 
-        using var conn = new SqlConnection(connectionString);
+        var sapiModel = await db.TtsModels
+            .AsNoTracking()
+            .FirstOrDefaultAsync(m => m.Provider == "system.speech");
 
-        // Get the ModelId for System.Speech
-        var modelId = await conn.ExecuteScalarAsync<Guid?>(
-            $"SELECT ModelId FROM [{schema}].[TtsModel] WHERE Provider = @p",
-            new { p = "system.speech" });
-
-        if (modelId is null)
+        if (sapiModel is null)
         {
-            Console.WriteLine("No 'system.speech' TTS model found. Run TtsModelSeeder first.");
+            Console.WriteLine("No 'system.speech' TTS model found.");
             return;
         }
 
-        var insertSql = $@"
-                IF NOT EXISTS (
-                    SELECT 1 FROM [{schema}].[TtsVoice]
-                    WHERE Provider = 'system.speech' AND ProviderVoiceId = @ProviderVoiceId
-                )
-                BEGIN
-                    INSERT INTO [{schema}].[TtsVoice]
-                      (VoiceId, ModelId, Provider, ProviderVoiceId, DisplayName, Locale, Gender, VoiceType, Status, IsActive, IsInstalled, CreatedAt, UpdatedAt)
-                    VALUES
-                      (NEWID(), @ModelId, 'system.speech', @ProviderVoiceId, @DisplayName, @Locale, @Gender, 'SAPI', 'Installed', 1, 1, SYSUTCDATETIME(), SYSUTCDATETIME())
-                END";
-
-        int count = 0;
         foreach (var v in installed)
         {
             var info = v.VoiceInfo;
-            count += await conn.ExecuteAsync(insertSql, new
+
+            var exists = await db.TtsVoices.AnyAsync(x =>
+                x.Provider == "system.speech" && x.ProviderVoiceId == info.Name);
+
+            if (exists)
+                continue;
+
+            db.TtsVoices.Add(new TtsVoice
             {
-                ModelId = modelId.Value,
+                VoiceId = Guid.NewGuid(),
+                ModelId = sapiModel.ModelId,
+                Provider = "system.speech",
                 ProviderVoiceId = info.Name,
                 DisplayName = info.Name,
                 Locale = info.Culture.Name,
-                Gender = info.Gender.ToString()
+                Gender = info.Gender.ToString(),
+                VoiceType = "SAPI",
+                Status = "Installed",
+                IsInstalled = true
             });
         }
 
-        Console.WriteLine($"SAPI: {installed.Count} voices processed (new inserts: {count}).");
+        await db.SaveChangesAsync();
+        Console.WriteLine($"SAPI: {installed.Count} voices processed (new inserts via EF).");
     }
 
-    // ---------------------- Helper ----------------------
+    // Helper-Record für Azure-API
     private record AzureVoiceResponse(
         string ShortName,
         string DisplayName,

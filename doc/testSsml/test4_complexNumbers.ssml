@@ -1,25 +1,32 @@
-<speak xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="de-DE">
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-DE">
   <voice name="de-AT-JonasNeural">
+    <p>
+      <s>Wegen {Freitext} kommt es am
+        <say-as interpret-as="date" format="dmy">27.10.2025</say-as>
+        zu Änderungen im Fahrplan.</s>
+      <break time="400ms"/>
 
-    Wegen {Freitext} kommt es am
-    <say-as interpret-as="date" format="dmy">27.10.2025</say-as>
-    zu Änderungen im Fahrplan.
-    Betroffen sind die Linien
-    <say-as interpret-as="digits">{Route.RouteNr}</say-as>,
-    <say-as interpret-as="digits">{Route.RouteNr}</say-as>
-    und
-    <say-as interpret-as="digits">{Route.RouteNr}</say-as>.
-    <break />
+      <s>Betroffen sind die Linien
+        <say-as interpret-as="digits">{Route.RouteNr}</say-as>,
+        <say-as interpret-as="digits">{Route.RouteNr}</say-as>
+        und
+        <say-as interpret-as="digits">{Route.RouteNr}</say-as>.
+      </s>
+      <break time="400ms"/>
 
-    Die Abfahrt erfolgt nun von Bereich
-    <say-as interpret-as="characters">A-B</say-as>.
-    <break />
+      <s>Die Abfahrt erfolgt nun von Bereich
+        <say-as interpret-as="characters">A-B</say-as>.
+      </s>
+      <break time="400ms"/>
 
-    Es kann dabei zu Verspätungen zwischen
-    <say-as interpret-as="cardinal">5</say-as>
-    und
-    <say-as interpret-as="cardinal">10</say-as>
-    Minuten kommen.
-    
+      <s>Es kann dabei zu Verspätungen zwischen
+        <say-as interpret-as="cardinal">5</say-as>
+        und
+        <say-as interpret-as="cardinal">10</say-as>
+        Minuten kommen.</s>
+    </p>
   </voice>
 </speak>

@@ -22,7 +22,7 @@ namespace AdHoc_SpeechSynthesizer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AdHoc_SpeechSynthesizer.Models.AppContext.MessageTemplate", b =>
+            modelBuilder.Entity("AdHoc_SpeechSynthesizer.Domain.MessageTemplate", b =>
                 {
                     b.Property<Guid>("TemplateId")
                         .ValueGeneratedOnAdd()
@@ -47,7 +47,7 @@ namespace AdHoc_SpeechSynthesizer.Migrations
                     b.ToTable("MessageTemplate", "dbo");
                 });
 
-            modelBuilder.Entity("AdHoc_SpeechSynthesizer.Models.AppContext.TtsModel", b =>
+            modelBuilder.Entity("AdHoc_SpeechSynthesizer.Domain.TtsModel", b =>
                 {
                     b.Property<Guid>("ModelId")
                         .ValueGeneratedOnAdd()
@@ -68,7 +68,7 @@ namespace AdHoc_SpeechSynthesizer.Migrations
                     b.ToTable("TtsModel", "dbo");
                 });
 
-            modelBuilder.Entity("AdHoc_SpeechSynthesizer.Models.AppContext.TtsVoice", b =>
+            modelBuilder.Entity("AdHoc_SpeechSynthesizer.Domain.TtsVoice", b =>
                 {
                     b.Property<Guid>("VoiceId")
                         .ValueGeneratedOnAdd()
@@ -81,9 +81,6 @@ namespace AdHoc_SpeechSynthesizer.Migrations
 
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsInstalled")
                         .HasColumnType("bit");
@@ -125,9 +122,9 @@ namespace AdHoc_SpeechSynthesizer.Migrations
                     b.ToTable("TtsVoice", "dbo");
                 });
 
-            modelBuilder.Entity("AdHoc_SpeechSynthesizer.Models.AppContext.TtsVoice", b =>
+            modelBuilder.Entity("AdHoc_SpeechSynthesizer.Domain.TtsVoice", b =>
                 {
-                    b.HasOne("AdHoc_SpeechSynthesizer.Models.AppContext.TtsModel", "Model")
+                    b.HasOne("AdHoc_SpeechSynthesizer.Domain.TtsModel", "Model")
                         .WithMany("Voices")
                         .HasForeignKey("ModelId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -136,7 +133,7 @@ namespace AdHoc_SpeechSynthesizer.Migrations
                     b.Navigation("Model");
                 });
 
-            modelBuilder.Entity("AdHoc_SpeechSynthesizer.Models.AppContext.TtsModel", b =>
+            modelBuilder.Entity("AdHoc_SpeechSynthesizer.Domain.TtsModel", b =>
                 {
                     b.Navigation("Voices");
                 });

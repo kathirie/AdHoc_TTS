@@ -16,7 +16,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 // Register DbContext with SQL Server
@@ -30,7 +29,7 @@ builder.Services.AddSingleton<SsmlValidator>();
 
 // DAOs
 builder.Services.AddScoped<IMessageTemplateDao, MessageTemplateDao>();
-builder.Services.AddScoped<IMessageTemplateDao, MessageTemplateDao>();
+builder.Services.AddScoped<ITtsModelDao, TtsModelDao>();
 builder.Services.AddScoped<ITtsVoiceDao, TtsVoiceDao>();
 
 builder.Services.AddScoped<ILocationDao, LocationDao>();

@@ -13,7 +13,6 @@ public class TtsVoice
     public int? SampleRateHertz { get; set; }
     public string? StylesJson { get; set; }
     public string? Status { get; set; }
-    public bool IsActive { get; set; } = true;
     public bool IsInstalled { get; set; } = false;
 
     // Navigation property to the owning model.

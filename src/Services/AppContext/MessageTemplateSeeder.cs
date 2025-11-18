@@ -1,68 +1,62 @@
-﻿using Dapper;
-using Microsoft.Data.SqlClient;
-
+﻿using AdHoc_SpeechSynthesizer.Data;
+using AdHoc_SpeechSynthesizer.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace AdHoc_SpeechSynthesizer.Services.AppContext;
 
 public static class MessageTemplateSeeder
 {
-    private const string schema = "dbo";
-
     public static async Task SeedAsync(IServiceProvider services)
     {
         using var scope = services.CreateScope();
-        var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-        var connectionString = config.GetConnectionString("DefaultConnection");
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-        if (string.IsNullOrWhiteSpace(connectionString))
-            throw new InvalidOperationException("No connection string configured.");
+        const string baustelleName = "Baustelle";
 
-        using var conn = new SqlConnection(connectionString);
-
-        var insertSql = $@"
-                IF NOT EXISTS (
-                    SELECT 1 
-                    FROM [{schema}].[MessageTemplate]
-                    WHERE Name = @Name
-                )
-                BEGIN
-                    INSERT INTO [{schema}].[MessageTemplate]
-                        (TemplateId, Name, Description, SsmlContent)
-                    VALUES
-                        (NEWID(), @Name, @Description, @SsmlContent)
-                END";
-
-        // Bsp 1 Baustelle
-        var baustelle = new
+        if (!await db.MessageTemplates.AnyAsync(t => t.Name == baustelleName))
         {
-            Name = "Baustelle",
-            Description = "Aufgrund von Bauarbeiten kann die Haltestelle {Location.RefLocationName} {Platform.PlatformNr} nicht angefahren werden. Die Haltestelle {Location.RefLocationName} {Platform.PlatformNr} wird daher ausgelassen.",
-            SSMLContent =
-                @"<speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis"" xml:lang=""de-DE"">
-                      <voice name=""de-DE-FlorianMultilingualNeural"">
-                        Aufgrund von Bauarbeiten kann die Haltestelle {Location.RefLocationName} {Platform.PlatformNr} nicht angefahren werden.
-                        <break />
-                        Die Haltestelle {Location.RefLocationName} {Platform.PlatformNr} wird daher ausgelassen.
-                      </voice>
-                    </speak>"
-        };
+            var tmpl = new MessageTemplate
+            {
+                TemplateId = Guid.NewGuid(),
+                Name = baustelleName,
+                Description =
+                    "Aufgrund von Bauarbeiten kann die Haltestelle {Location.RefLocationName} {Platform.PlatformNr} nicht angefahren werden. " +
+                    "Die Haltestelle {Location.RefLocationName} {Platform.PlatformNr} wird daher ausgelassen.",
+                SsmlContent =
+@"<speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis"" xml:lang=""de-DE"">
+  <voice name=""de-DE-FlorianMultilingualNeural"">
+    Aufgrund von Bauarbeiten kann die Haltestelle {Location.RefLocationName} {Platform.PlatformNr} nicht angefahren werden.
+    <break />
+    Die Haltestelle {Location.RefLocationName} {Platform.PlatformNr} wird daher ausgelassen.
+  </voice>
+</speak>"
+            };
 
-        // Bsp 2 Technische Störungen
-        var stoerung = new
+            db.MessageTemplates.Add(tmpl);
+        }
+
+        const string stoerungName = "Technische Störungen";
+
+        if (!await db.MessageTemplates.AnyAsync(t => t.Name == stoerungName))
         {
-            Name = "Technische Störungen",
-            Description = "Aufgrund von {Freitext}  <break />kommt es bei {Route.RouteNr} zu Verspätungen.",
-            SSMLContent =
-                @"<speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis"" xml:lang=""de-DE"">
-                      <voice name=""de-DE-FlorianMultilingualNeural"">
-                        Aufgrund von {Freitext} kommt es bei {Route.RouteNr} zu Verspätungen.
-                      </voice>
-                    </speak>"
-        };
+            var tmpl = new MessageTemplate
+            {
+                TemplateId = Guid.NewGuid(),
+                Name = stoerungName,
+                Description =
+                    "Aufgrund von {Freitext} kommt es bei {Route.RouteNr} zu Verspätungen.",
+                SsmlContent =
+@"<speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis"" xml:lang=""de-DE"">
+  <voice name=""de-DE-FlorianMultilingualNeural"">
+    Aufgrund von {Freitext} kommt es bei {Route.RouteNr} zu Verspätungen.
+  </voice>
+</speak>"
+            };
 
-        var inserted1 = await conn.ExecuteAsync(insertSql, baustelle);
-        var inserted2 = await conn.ExecuteAsync(insertSql, stoerung);
+            db.MessageTemplates.Add(tmpl);
+        }
 
-        Console.WriteLine($"MessageTemplateSeeder: Inserts executed (Baustelle: {inserted1}, Technische Störungen: {inserted2}).");
+        await db.SaveChangesAsync();
+        Console.WriteLine("EfMessageTemplateSeeder: Templates ensured via EF.");
     }
 }

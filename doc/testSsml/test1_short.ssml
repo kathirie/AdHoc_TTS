@@ -1,5 +1,10 @@
-<speak xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="de-DE">
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-DE">
   <voice name="de-AT-JonasNeural">
-    Aufgrund von {Freitext} verzögert sich um einige Minuten.
+    <p>
+      <s>Aufgrund von {Freitext} verzögert sich die Weiterfahrt um einige Minuten.</s>
+    </p>
   </voice>
 </speak>

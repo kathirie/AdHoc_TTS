@@ -1,16 +1,25 @@
-<speak xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="de-DE">
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-DE">
   <voice name="de-AT-JonasNeural">
+    <p>
+      <s>Aufgrund von {Freitext} wird die Fahrt der Linie
+        <say-as interpret-as="digits">{Route.RouteNr}</say-as>
+        zwischen {Location.RefLocationName} und {Location.RefLocationName}
+        als Schienenersatzverkehr geführt.</s>
+      <break time="400ms"/>
+      
+      <s>Die Haltestellen
+         {Location.RefLocationName},
+         {Location.RefLocationName}
+         sowie {Location.RefLocationName}
+         entfallen vollständig.</s>
+      <break time="400ms"/>
 
-    Aufgrund von {Freitext} wird die Fahrt der Linie
-    <say-as interpret-as="digits">{Route.RouteNr}</say-as>
-    zwischen {Location.RefLocationName} und {Location.RefLocationName}
-    als Schienenersatzverkehr geführt.
-    <break />
-
-    Die Haltestellen {Location.RefLocationName}, {Location.RefLocationName}
-    sowie {Location.RefLocationName} entfallen vollständig.
-
-    Weitere Informationen erhalten Sie unter
-    <say-as interpret-as="characters">www.tts-oevv.at</say-as>.
+      <s>Weitere Informationen erhalten Sie unter
+         <say-as interpret-as="characters">www.tts-oevv.at</say-as>.
+      </s>
+    </p>
   </voice>
 </speak>

@@ -49,7 +49,7 @@ public class TtsModelVoicesController : ControllerBase
         if (!exists) return NotFound($"No model found for ID: {modelId}");
 
         var voices = await _db.TtsVoices.AsNoTracking()
-            .Where(v => v.ModelId == modelId && v.IsActive && v.Locale.StartsWith("de")) // german voices only
+            .Where(v => v.ModelId == modelId && v.Locale.StartsWith("de")) // german voices only
             .OrderBy(v => v.DisplayName)
             .Select(v => v)
             .ToListAsync();

@@ -1,20 +1,26 @@
-<speak xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="de-DE">
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-DE">
   <voice name="de-AT-JonasNeural">
-    Aufgrund von Bauarbeiten werden die Haltestellen
-    {Location.RefLocationName} und {Location.RefLocationName}
-    heute nicht bedient.
-    <break />
+    <p>
+      <s>Aufgrund von Bauarbeiten werden die Haltestellen
+         {Location.RefLocationName} und {Location.RefLocationName}
+         heute nicht bedient.</s>
+      <break time="400ms"/>
+      
+      <s>Stattdessen wird eine Ersatzhaltestelle in
+         {Location.RefLocationName} eingerichtet.</s>
+      <break time="400ms"/>
 
-    Stattdessen wird eine Ersatzhaltestelle in
-    {Location.RefLocationName} eingerichtet.
-    <break />
+      <s>Die Fahrt der Linie
+        <say-as interpret-as="digits">{Route.RouteNr}</say-as>
+        beginnt am Bereich
+        <say-as interpret-as="cardinal">{Platform.PlatformNr}</say-as>.
+      </s>
+      <break time="400ms"/>
 
-    Die Fahrt der Linie
-    <say-as interpret-as="digits">{Route.RouteNr}</say-as>
-    beginnt am Bereich
-    <say-as interpret-as="cardinal">{Platform.PlatformNr}</say-as>.
-    <break />
-
-    Weitere Informationen zu aktuellen Fahrplanänderungen erhalten Sie online.
+      <s>Weitere Informationen zu aktuellen Fahrplanänderungen erhalten Sie online.</s>
+    </p>
   </voice>
 </speak>

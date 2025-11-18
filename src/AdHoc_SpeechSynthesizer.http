@@ -187,8 +187,6 @@ GET https://localhost:7275/api/Route
 GET https://localhost:7275/api/Route/RouteNrs
 
 
-
-
 ### Get all target texts
 GET https://localhost:7275/api/TargetText
 Accept: application/json
