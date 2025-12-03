@@ -2,12 +2,10 @@
 <speak version="1.0"
        xmlns="http://www.w3.org/2001/10/synthesis"
        xml:lang="de-DE">
-  <voice name="de-AT-JonasNeural">
+  <voice name="de-AT-IngridNeural">
     <p>
       <s>
-        <prosody rate="-5%">
-          Wegen {Freitext} verzögert sich die Weiterfahrt um einige Minuten.
-        </prosody>
+        Wegen Bauarbeiten verzögert sich die Weiterfahrt um einige Minuten.
       </s>
     </p>
   </voice>

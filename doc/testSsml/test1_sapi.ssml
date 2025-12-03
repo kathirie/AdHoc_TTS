@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-DE">
+  <voice name="de-AT-JonasNeural">
+
+    <!-- Variante 3: Minuten langsamer + leicht höhere Tonlage -->
+    <p>
+      <s>
+        Wegen Bauarbeiten <break time="50ms"/> verzögert sich die Weiterfahrt <break time="50ms"/> um einige 
+        <prosody rate="-30%" pitch="+4%">Minuten</prosody>.
+      </s>
+    </p>
+
+  </voice>
+</speak>

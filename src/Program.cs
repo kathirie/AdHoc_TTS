@@ -3,11 +3,8 @@ using AdHoc_SpeechSynthesizer.Dal.Ado;
 using AdHoc_SpeechSynthesizer.Dal.Interface;
 using AdHoc_SpeechSynthesizer.Data;
 using AdHoc_SpeechSynthesizer.Services;
-using AdHoc_SpeechSynthesizer.Services.AppContext;
-using AdHoc_SpeechSynthesizer.Services.CompanyContext;
 using AdHoc_SpeechSynthesizer.Services.Interfaces;
 using AdHoc_SpeechSynthesizer.Services.Interfaces.AppContext;
-using AdHoc_SpeechSynthesizer.Services.Interfaces.CompanyContext;
 using Microsoft.EntityFrameworkCore;
 
 // https://localhost:7275/synthesize.html

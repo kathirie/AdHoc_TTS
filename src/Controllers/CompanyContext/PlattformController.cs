@@ -1,4 +1,4 @@
-﻿using AdHoc_SpeechSynthesizer.Services.Interfaces.CompanyContext;
+﻿using AdHoc_SpeechSynthesizer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdHoc_SpeechSynthesizer.Controllers.CompanyContext;

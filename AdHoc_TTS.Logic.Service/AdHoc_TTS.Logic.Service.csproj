@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.47.0" />
+    <PackageReference Include="System.Speech" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AdHoc_TTS.Common\AdHoc_TTS.Common.csproj" />
+    <ProjectReference Include="..\AdHoc_TTS.Dal.Interface\AdHoc_TTS.Dal.Interface.csproj" />
+    <ProjectReference Include="..\AdHoc_TTS.Data\AdHoc_TTS.Data.csproj" />
+    <ProjectReference Include="..\AdHoc_TTS.Logic.Interface\AdHoc_TTS.Logic.Interface.csproj" />
+  </ItemGroup>
+
+</Project>

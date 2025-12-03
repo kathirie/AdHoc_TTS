@@ -2,7 +2,7 @@
 <speak version="1.0"
        xmlns="http://www.w3.org/2001/10/synthesis"
        xml:lang="de-DE">
-  <voice name="de-AT-JonasNeural">
+  <voice name="de-AT-IngridNeural">
     <p>
       <s>Aufgrund von {Freitext} wird die Fahrt der Linie
         <say-as interpret-as="digits">{Route.RouteNr}</say-as>
@@ -15,7 +15,6 @@
          {Location.RefLocationName}
          sowie {Location.RefLocationName}
          entfallen vollständig.</s>
-
     </p>
   </voice>
 </speak>

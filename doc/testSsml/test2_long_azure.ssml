@@ -2,7 +2,7 @@
 <speak version="1.0"
        xmlns="http://www.w3.org/2001/10/synthesis"
        xml:lang="de-DE">
-  <voice name="de-AT-JonasNeural">
+  <voice name="de-AT-IngridNeural">
     <p>
       <s>Aufgrund von Bauarbeiten werden die Haltestellen
          {Location.RefLocationName} und {Location.RefLocationName}
@@ -13,10 +13,10 @@
          {Location.RefLocationName} eingerichtet.</s>
       <break time="400ms"/>
 
-      <s>Die Fahrt der Linie
+      <s>Die Linie
         <say-as interpret-as="digits">{Route.RouteNr}</say-as>
-        beginnt am Bereich
-        <say-as interpret-as="cardinal">{Platform.PlatformNr}</say-as>.
+        fährt heute im Bereich
+        <say-as interpret-as="cardinal">{Platform.PlatformNr}</say-as> ab.
       </s>
       <break time="400ms"/>
 

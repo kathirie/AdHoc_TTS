@@ -160,17 +160,9 @@ Content-Type: application/json
 
 
 
-
-
-### Get all locations
-GET https://localhost:7275/api/Location
-Accept: application/json
-
 ### Get all RefLocationNames
 GET https://localhost:7275/api/Location/RefLocationNames
 Accept: application/json
-
-
 
 
 ### all platforms numbers
@@ -178,18 +170,9 @@ GET https://localhost:7275/api/Platform/platformnumbers
 Accept: application/json
 
 
-
-
-### All routes
-GET https://localhost:7275/api/Route
-
 ### All RouteNrs
 GET https://localhost:7275/api/Route/RouteNrs
 
-
-### Get all target texts
-GET https://localhost:7275/api/TargetText
-Accept: application/json
 
 ### Get all target text FrontTexts
 GET https://localhost:7275/api/TargetText/fronttexts
