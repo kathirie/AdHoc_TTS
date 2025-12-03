@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>afe4296e-8043-4789-aab9-ccca6ef27ebf</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.66" />
+    <PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.47.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
+    <PackageReference Include="NSwag.AspNetCore" Version="14.6.3" />
+    <PackageReference Include="System.Speech" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AdHoc_TTS.Common\AdHoc_TTS.Common.csproj" />
+    <ProjectReference Include="..\AdHoc_TTS.Dal.Dao\AdHoc_TTS.Dal.Dao.csproj" />
+    <ProjectReference Include="..\AdHoc_TTS.Dal.Interface\AdHoc_TTS.Dal.Interface.csproj" />
+    <ProjectReference Include="..\AdHoc_TTS.Data\AdHoc_TTS.Data.csproj" />
+    <ProjectReference Include="..\AdHoc_TTS.Logic.Interface\AdHoc_TTS.Logic.Interface.csproj" />
+    <ProjectReference Include="..\AdHoc_TTS.Logic.Service\AdHoc_TTS.Logic.Service.csproj" />
+  </ItemGroup>
+
+</Project>
