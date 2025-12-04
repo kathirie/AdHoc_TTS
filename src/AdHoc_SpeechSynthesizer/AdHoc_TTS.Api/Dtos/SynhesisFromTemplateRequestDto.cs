@@ -2,7 +2,7 @@
 
 namespace AdHoc_SpeechSynthesizer.Api.Dtos;
 
-public class SynthesisFromTemplateRequestDto
+public record SynthesisFromTemplateRequestDto
 {
     [Required]
     public Guid TemplateId { get; set; }

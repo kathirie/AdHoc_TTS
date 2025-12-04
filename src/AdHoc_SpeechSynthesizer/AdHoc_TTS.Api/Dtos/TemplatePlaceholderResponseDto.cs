@@ -2,7 +2,7 @@
 
 namespace AdHoc_SpeechSynthesizer.Api.Dtos;
 
-public class TemplatePlaceholderResponseDto
+public record TemplatePlaceholderResponseDto
 {
     [Required]
     public string Name { get; set; } = string.Empty;
