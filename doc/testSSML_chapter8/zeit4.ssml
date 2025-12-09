@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Der nächste Zug fährt um 07:10 ab.</s>
+      <s>Der nächste Zug fährt um sieben Uhr zehn ab.</s>
+
+      <s>Der darauffolgende Zug fährt um 07:25 ab.</s>
+      <s>Der darauffolgende Zug fährt um sieben Uhr fünfundzwanzig ab.</s>
+
+      <s>Der letzte Zug dieser Linie fährt um 23:40 ab.</s>
+      <s>Der letzte Zug dieser Linie fährt um dreiundzwanzig Uhr vierzig ab.</s>
+    </p>
+  </voice>
+</speak>
+<!-- uhrzeit_mehrere_saetze -->

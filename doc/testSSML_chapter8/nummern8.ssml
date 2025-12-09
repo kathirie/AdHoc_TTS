@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Die Züge 5201, 9503 und 2222 fahren heute von Gleis 4 ab.</s>
+      <s>Die Züge fünftausendzweihunderteins, neuntausendfünfhundertdrei und zweitausendzweihundertzweiundzwanzig fahren heute von Gleis vier ab.</s>
+
+      <s>Die Züge 3107, 9999 und 5555 enden am Hauptbahnhof.</s>
+      <s>Die Züge dreitausendeinhundertsieben, neuntausendneunhundertneunundneunzig und fünftausendfünfhundertfünfundfünfzig enden am Hauptbahnhof.</s>
+    </p>
+  </voice>
+</speak>
+<!-- nummern_vierstellig_aufzaehlung -->

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+
+      <!-- 1: Umlaute einfach – Block 1 -->
+      <s>Erster Block: Umlaute, einfache Haltestellennamen, Teil eins.</s>
+      <break time="800ms"/>
+      <s>Vier Haltestellen: Bad Vöslau, Mühlgasse; Gänserndorf, Bahnhof; Großhöflein, Eisenstädter Straße; und Mörbisch am See, Hauptstraße.</s>
+      <break time="1200ms"/>
+
+      <!-- 2: Umlaute einfach – Block 2 -->
+      <s>Zweiter Block: Umlaute, einfache Haltestellennamen, Teil zwei.</s>
+      <break time="800ms"/>
+      <s>Vier Haltestellen: Ödlitz, Kirche; Kleinhöflein, Wiener Straße; Schützen am Gebirge, Ruster Straße; und Trausdorf an der Wulka, Mühlweg.</s>
+      <break time="1200ms"/>
+
+      <!-- 3: XYZ – klassische Fälle -->
+      <s>Dritter Block: Buchstaben X, Y und Z in Haltestellennamen, klassische Fälle.</s>
+      <break time="800ms"/>
+      <s>Vier Haltestellen: Laxenburg, Wiener Straße; Zwölfaxing, Ortsmitte; Graz Jakominiplatz; und Laxenburg, Franz Joseph Platz.</s>
+      <break time="1200ms"/>
+
+      <!-- 4: XYZ – zusätzliche und gemischte Fälle -->
+      <s>Vierter Block: Buchstaben X, Y und Z, zusätzliche und gemischte Fälle.</s>
+      <break time="800ms"/>
+      <s>Vier Haltestellen: Zwölfaxing, Brunnengasse; Zwölfaxing, Josef Weiß Gasse; Rannersdorf, Baiergasse; und Weigelsdorf, Judenweg.</s>
+      <break time="1200ms"/>
+
+      <!-- 5: CH – Deutsch und Kirch, einfache Kombinationen -->
+      <s>Fünfter Block: C H Laut, Deutsch und Kirch, einfache Kombinationen.</s>
+      <break time="800ms"/>
+      <s>Vier Haltestellen: Deutsch Haslau, Obere Hauptstraße; Deutsch Haslau, Untere Hauptstraße; Deutsch Jahrndorf, Kirche; und Deutsch Jahrndorf, Mühlstraße.</s>
+      <break time="1200ms"/>
+
+      <!-- 6: CH – Kombination mit Umlauten und längeren Namen -->
+      <s>Sechster Block: C H Laut, kombiniert mit Umlauten und längeren Namen.</s>
+      <break time="800ms"/>
+      <s>Vier Haltestellen: Deutsch Jahrndorf, Obere Hauptstraße; Kirchschlag Bucklige Welt Pinz; Weissenbach an der Triesting, Further Straße; und Weissenbach an der Triesting, Kirchenplatz.</s>
+      <break time="1200ms"/>
+
+      <!-- 7: Sonderzeichen – Bindestrich und Schrägstrich einfach -->
+      <s>Siebenter Block: Sonderzeichen, Bindestrich und Schrägstrich, einfache Beispiele.</s>
+      <break time="800ms"/>
+      <s>Vier Haltestellen: Biedermannsdorf, Siegfried Marcus Straße; I Z N Ö Süd, Straße eins Mitte; Enzersdorf an der Fischa, Kellergasse; und Rust am Neusiedler See, Franz Joseph Platz.</s>
+      <break time="1200ms"/>
+
+      <!-- 8: Sonderzeichen – kombiniert mit Umlauten und unterschiedlichen Regionen -->
+      <s>Achter Block: Sonderzeichen, kombiniert mit Umlauten und verschiedenen Regionen.</s>
+      <break time="800ms"/>
+      <s>Vier Haltestellen: Trausdorf an der Wulka, Bachgasse; Sankt Georgen an der Leitha, Hauptstraße; Langeck im Burgenland, Ortszufahrt; und Rust am Neusiedler See, Heidegasse.</s>
+      <break time="1200ms"/>
+
+      <!-- 9: Lange Namen – Verwaltungs- und Siedlungsbezüge, Teil 1 -->
+      <s>Neunter Block: lange Haltestellennamen, mit Verwaltungs und Siedlungsbezug, Teil eins.</s>
+      <break time="800ms"/>
+      <s>Vier Haltestellen: Neusiedl am See, Bezirkshauptmannschaft; Siedlung Maria Theresia, Schedlerstraße; Trausdorf an der Wulka, Feriensiedlung; und Wien, Rustenfeld Siedlung.</s>
+      <break time="1200ms"/>
+
+      <!-- 10: Lange Namen – mit Zahlen, Buchstaben und mehreren Wörtern, Teil 2 -->
+      <s>Zehnter Block: lange Haltestellennamen, mit Zahlen, Buchstaben und mehreren Wörtern, Teil zwei.</s>
+      <break time="800ms"/>
+      <s>Vier Haltestellen: Brunn am Gebirge, Industriestraße B West; Markgrafneusiedl, Altes Dorf neunundzwanzig achtundsechzig; Parndorf Pado Shopping Galerie; und Maria Enzersdorf, Franz Josef Straße.</s>
+      <break time="1200ms"/>
+
+      <!-- 11: Einfache Ortsnamen – kurze Referenzgruppe, Teil 1 -->
+      <s>Elfter Block: einfache Ortsnamen, kurze Referenzgruppe, Teil eins.</s>
+      <break time="800ms"/>
+      <s>Vier Haltestellen: Achau, Bahnhof; Achau, Friedhof; Andlersdorf, Ortsmitte; und Engelhartstetten, Gemeindeamt.</s>
+      <break time="1200ms"/>
+
+      <!-- 12: Einfache Ortsnamen – mittlere Länge, Teil 2 -->
+      <s>Zwölfter Block: einfache Ortsnamen, mittlere Länge, Teil zwei.</s>
+      <break time="800ms"/>
+      <s>Vier Haltestellen: Felixdorf, Bahnhof; Guntramsdorf, Lokalbahn; Moosbrunn, Kirche; und Walbersdorf, Hauptstraße.</s>
+      <break time="1200ms"/>
+
+      <!-- 13: Einfache Ortsnamen – Bahnhöfe und Kirchen, Teil 3 -->
+      <s>Dreizehnter Block: einfache Ortsnamen, Bahnhöfe und Kirchen, Teil drei.</s>
+      <break time="800ms"/>
+      <s>Vier Haltestellen: Parndorf, Bahnhof; Zurndorf, Bahnhof; Jennersdorf, Bahnhof; und Gols, Kirche.</s>
+      <break time="1200ms"/>
+
+    </p>
+  </voice>
+</speak>

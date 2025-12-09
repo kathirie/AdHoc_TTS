@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+
+      <!-- Jänner -->
+      <s>Am 01.01.2023 fährt die Linie regulär.</s>
+      <s>Am ersten Jänner zweitausenddreiundzwanzig fährt die Linie regulär.</s>
+      <break time="500ms"/>
+
+      <!-- Februar -->
+      <s>Am 01.02.2024 kommt es zu Verzögerungen.</s>
+      <s>Am ersten Februar zweitausendvierundzwanzig kommt es zu Verzögerungen.</s>
+      <break time="500ms"/>
+
+      <!-- März -->
+      <s>Am 01.03.2025 wird die Strecke gesperrt.</s>
+      <s>Am ersten März zweitausendfünfundzwanzig wird die Strecke gesperrt.</s>
+      <break time="500ms"/>
+
+      <!-- April -->
+      <s>Am 01.04.2026 beginnt der Ersatzverkehr.</s>
+      <s>Am ersten April zweitausendsechsundzwanzig beginnt der Ersatzverkehr.</s>
+      <break time="500ms"/>
+
+      <!-- Mai -->
+      <s>Am 01.05.2027 fährt der Zug im Feiertagsfahrplan.</s>
+      <s>Am ersten Mai zweitausendsiebenundzwanzig fährt der Zug im Feiertagsfahrplan.</s>
+      <break time="500ms"/>
+
+      <!-- Juni -->
+      <s>Am 01.06.2028 findet eine Wartung statt.</s>
+      <s>Am ersten Juni zweitausendachtundzwanzig findet eine Wartung statt.</s>
+      <break time="500ms"/>
+
+      <!-- Juli -->
+      <s>Am 01.07.2029 wird der Bahnsteig erneuert.</s>
+      <s>Am ersten Juli zweitausendneunundzwanzig wird der Bahnsteig erneuert.</s>
+      <break time="500ms"/>
+
+      <!-- August -->
+      <s>Am 01.08.2030 fährt die Linie in Intervallen.</s>
+      <s>Am ersten August zweitausenddreißig fährt die Linie in Intervallen.</s>
+      <break time="500ms"/>
+
+      <!-- September -->
+      <s>Am 01.09.2031 startet der Herbstfahrplan.</s>
+      <s>Am ersten September zweitausendeinunddreißig startet der Herbstfahrplan.</s>
+      <break time="500ms"/>
+
+      <!-- Oktober -->
+      <s>Am 01.10.2032 kommt es zu Änderungen im Fahrplan.</s>
+      <s>Am ersten Oktober zweitausendzweiunddreißig kommt es zu Änderungen im Fahrplan.</s>
+      <break time="500ms"/>
+
+      <!-- November -->
+      <s>Am 01.11.2033 gilt ein Sonderfahrplan.</s>
+      <s>Am ersten November zweitausenddreiunddreißig gilt ein Sonderfahrplan.</s>
+      <break time="500ms"/>
+
+      <!-- Dezember -->
+      <s>Am 01.12.2034 beginnt der Winterfahrplan.</s>
+      <s>Am ersten Dezember zweitausendvierunddreißig beginnt der Winterfahrplan.</s>
+      <break time="500ms"/>
+
+    </p>
+  </voice>
+</speak>

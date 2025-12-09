@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Die nächste Haltestelle ist Hauptbahnhof, Umstieg zu mehreren Buslinien.</s>
+      <s>Bitte halten Sie den Türbereich während der Fahrt frei.</s>
+      <s>Vergessen Sie nicht, Ihr Ticket bei sich zu tragen.</s>
+    </p>
+  </voice>
+</speak>
+<!-- saetze_mittel -->

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Der Bus kommt in 12 Minuten an.</s>
+      <s>Der Bus kommt in zwölf Minuten an.</s>
+
+      <s>Dieser Zug hat eine Verspätung von 8 Minuten.</s>
+      <s>Dieser Zug hat eine Verspätung von acht Minuten.</s>
+    </p>
+  </voice>
+</speak>
+<!-- uhrzeit_verspaetung -->

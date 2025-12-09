@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Die Züge 111, 215 und 320 fahren von diesem Bahnsteig ab.</s>
+      <s>Die Züge einhundertelf, zweihundertfünfzehn und dreihundertzwanzig fahren von diesem Bahnsteig ab.</s>
+
+      <s>Die Buslinien 123, 456 und 789 verkehren nur im Stadtgebiet.</s>
+      <s>Die Buslinien einhundertdreiundzwanzig, vierhundertsechsundfünfzig und siebenhundertneunundachzig verkehren nur im Stadtgebiet.</s>
+
+      <s>Die Kurse 101, 336, 999 und 555 enden an der Haltestelle Hauptbahnhof.</s>
+      <s>Die Kurse einhunderteins, dreihundertsechsunddreißig, neunhundertneunundneunzig und fünfhundertfünfundfünfzig enden an der Haltestelle Hauptbahnhof.</s>
+    </p>
+  </voice>
+</speak>
+<!-- nummern_dreistellig_aufzaehlung -->

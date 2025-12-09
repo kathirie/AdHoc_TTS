@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Der Zug 2024 fährt nach Graz.</s>
+      <s>Der Zug zweitausendvierundzwanzig fährt nach Graz.</s>
+
+      <s>Der Schnellzug 1503 fährt nach Wien.</s>
+      <s>Der Schnellzug eintausendfünfhundertdrei fährt nach Wien.</s>
+
+      <s>Der Regionalzug 3107 endet in Salzburg.</s>
+      <s>Der Regionalzug dreitausendeinhundertsieben endet in Salzburg.</s>
+    </p>
+  </voice>
+</speak>
+<!-- nummern_vierstellig -->

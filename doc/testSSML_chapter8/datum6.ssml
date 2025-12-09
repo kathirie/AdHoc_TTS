@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Aufgrund von Bauarbeiten kommt es am 18.04.2027 auf dieser Linie ganztägig zu erheblichen Verzögerungen.</s>
+      <s>Aufgrund von Bauarbeiten kommt es am achtzehnen April zweitausendsiebenundzwanzig auf dieser Linie ganztägig zu erheblichen Verzögerungen.</s>
+    </p>
+  </voice>
+</speak>
+<!-- datum_langer_satz -->

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Für Fahrplanauskünfte wählen Sie 0800 123456, für Fundgegenstände 0800 654321.</s>
+      <s>Für Fahrplanauskünfte wählen Sie null acht null null eins zwei drei vier fünf sechs, für Fundgegenstände null acht null null sechs fünf vier drei zwei eins.</s>
+    </p>
+  </voice>
+</speak>
+<!-- telefonnummer_mehrere -->

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Für Auskünfte rufen Sie bitte die Nummer 0800 123456 an.</s>
+      <s>Für Auskünfte rufen Sie bitte die Nummer null acht null null eins zwei drei vier fünf sechs an.</s>
+    </p>
+  </voice>
+</speak>
+<!-- telefonnummer_einzeln -->

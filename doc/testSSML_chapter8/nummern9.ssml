@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <!-- einstellig -->
+      <s>Der Bus der Linie 4 fährt in 3 Minuten von Gleis 1 ab.</s>
+      <s>Der Bus der Linie vier fährt in drei Minuten von Gleis eins ab.</s>
+
+      <!-- zweistellig -->
+      <s>Die Straßenbahn der Linie 12 erreicht in 15 Minuten die Haltestelle mit Gleis 2 A.</s>
+      <s>Die Straßenbahn der Linie zwölf erreicht in fünfzehn Minuten die Haltestelle mit Gleis zwei A.</s>
+
+      <!-- dreistellig -->
+      <s>Der Zug 245 fährt in 10 Minuten von Gleis 3 ab und erreicht nach 120 Minuten sein Ziel.</s>
+      <s>Der Zug zweihundertfünfundvierzig fährt in zehn Minuten von Gleis drei ab und erreicht nach einhundertzwanzig Minuten sein Ziel.</s>
+
+      <!-- vierstellig -->
+      <s>Der Schnellzug 2024 fährt um 10:15 von Gleis 14 ab und erreicht nach 180 Minuten den Bahnhof.</s>
+      <s>Der Schnellzug zweitausendvierundzwanzig fährt um zehn Uhr fünfzehn von Gleis vierzehn ab und erreicht nach einhundertachtzig Minuten den Bahnhof.</s>
+    </p>
+  </voice>
+</speak>
+<!-- nummern_langer_satz_gemischt -->

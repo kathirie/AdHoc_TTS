@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Die Linie 12 fährt in Kürze ab.</s>
+      <s>Die Linie zwölf fährt in Kürze ab.</s>
+
+      <s>Die Linie 23 fährt nur bis zur Endstation.</s>
+      <s>Die Linie dreiundzwanzig fährt nur bis zur Endstation.</s>
+
+      <s>Die Linie 45 hält an allen Stationen.</s>
+      <s>Die Linie fünfundvierzig hält an allen Stationen.</s>
+    </p>
+  </voice>
+</speak>
+<!-- nummern_zweistellig -->

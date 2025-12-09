@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Die nächsten Abfahrten sind in 1, 3 und 5 Minuten.</s>
+      <s>Die nächsten Abfahrten sind in eins, drei und fünf Minuten.</s>
+
+      <s>Die Züge fahren von Gleis 2, 4 und 6 ab.</s>
+      <s>Die Züge fahren von Gleis zwei, vier und sechs ab.</s>
+
+      <s>Die Busse der Linien 1, 4, 8 und 7 halten an dieser Haltestelle.</s>
+      <s>Die Busse der Linien eins, vier, acht und sieben halten an dieser Haltestelle.</s>
+    </p>
+  </voice>
+</speak>
+<!-- nummern_einstellig_aufzaehlung -->

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Die nächsten Abfahrten sind um 10, 15 und 20 Minuten nach der vollen Stunde.</s>
+      <s>Die nächsten Abfahrten sind um zehn, fünfzehn und zwanzig Minuten nach der vollen Stunde.</s>
+
+      <s>Die Linien 12, 24 und 32 halten an diesem Bahnsteig.</s>
+      <s>Die Linien zwölf, vierundzwanzig und zweiunddreißig halten an diesem Bahnsteig.</s>
+
+      <s>Es kommt zu Verspätungen von 10, 68, 85 und 25 Minuten.</s>
+      <s>Es kommt zu Verspätungen von zehn, achtundsechzig, fünfundachzig und fünfundzwanzig Minuten.</s>
+    </p>
+  </voice>
+</speak>
+<!-- nummern_zweistellig_aufzaehlung -->

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Zwischen dem 09.06.2026 und dem 27.08.2026 kommt es zu Verspätungen.</s>
+      <s>Zwischen dem neunten Juni zweitausendsechsundzwanzig und dem siebenundzwanzigsten August zweitausendsechsundzwanzig kommt es zu Verspätungen.</s>
+    </p>
+  </voice>
+</speak>
+<!-- datum_zwischen -->

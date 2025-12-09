@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Wegen einer unerwarteten Betriebsstörung im Bereich der Überfuhrstraße kommt es auf dieser Linie zu erheblichen Verzögerungen.</s>
+    </p>
+  </voice>
+</speak>
+<!-- woerter_langer_satz -->

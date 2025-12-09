@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Die Sperre dilt für 31.07.2032, 07.10.2033 und 01.01.2036 an.</s>
+      <s>Die Sperre gilt für einundreißigster Juli zweitausendzweiundreißig, siebten Oktober zweitausenddreiundreißig und ersten Jänner zweitausendsechsundreißig an.</s>
+    </p>
+  </voice>
+</speak>
+<!-- datum_aufzaehlung-->

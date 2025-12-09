@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Die nächste Station ist Wien Praterstern.</s>
+      <s>Die nächste Station ist Graz Hauptbahnhof.</s>
+      <s>Die nächste Station ist Wiener Neustadt Nord.</s>
+    </p>
+  </voice>
+</speak>
+<!-- woerter_lange_stationsnamen -->

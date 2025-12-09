@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Diese Fahrt endet hier, bitte alle aussteigen.</s>
+      <s>Bitte achten Sie beim Aussteigen auf den Abstand zwischen Zug und Bahnsteig.</s>
+      <s>Wir danken für Ihre Fahrt mit den öffentlichen Verkehrsmitteln.</s>
+    </p>
+  </voice>
+</speak>
+<!-- woerter_mehrere_saetze -->

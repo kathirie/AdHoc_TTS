@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Die Sperre gilt am 23.03.2028.</s>
+      <s>Die Sperre gilt am dreiundzwazigsten März zweitausendachtundzwanzig.</s>
+    </p>
+  </voice>
+</speak>
+<!-- datum_kurz_simple -->

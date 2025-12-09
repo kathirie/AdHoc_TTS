@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Am 04.05.2049 fährt kein Zug nach Graz.</s>
+      <s>Am vierten Mai zweitausendneunundvierzig fährt kein Zug nach Graz.</s>
+      <s>Am <say-as interpret-as="date">04.05.2049</say-as> fährt kein Zug nach Graz.</s>
+      <s>Am <say-as interpret-as="characters">4</say-as>ten
+      <say-as interpret-as="characters">5</say-as>ten
+      2049 fährt kein Zug nach Graz.</s>
+    </p>
+  </voice>
+</speak>
+<!-- datum_am_beispiel -->

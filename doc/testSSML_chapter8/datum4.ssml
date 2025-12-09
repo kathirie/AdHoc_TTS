@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Die Sperre gilt vom 10.11.2024 bis 12.12.2025.</s>
+      <s>Die Sperre gilt vom zehnten November zweitausendvierundzwanzig bis zum zwölften Dezember zweitausendfünfundzwanzig.</s>
+    </p>
+  </voice>
+</speak>
+<!-- datum_von_bis -->

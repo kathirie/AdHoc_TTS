@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Wegen einer Signalstörung im Bereich der nächsten Station kommt es auf dieser Linie derzeit zu erheblichen Verzögerungen, wir bitten um Ihr Verständnis.</s>
+      <s>Aufgrund von Bauarbeiten am Gleis fährt dieser Zug heute eine geänderte Route und hält nicht an allen üblichen Stationen.</s>
+    </p>
+  </voice>
+</speak>
+<!-- saetze_lang -->

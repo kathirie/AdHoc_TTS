@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Am 10.11.2038 fährt diese Linie nur im Halbstundentakt.</s>
+      <s>Am zehnten November zweitausendachtunddreißig fährt diese Linie nur im Halbstundentakt.</s>
+
+      <s>Am 06.02.2064 ist der Betrieb wegen Bauarbeiten eingeschränkt.</s>
+      <s>Am sechsten Februar zweitausendvierundsechzig ist der Betrieb wegen Bauarbeiten eingeschränkt.</s>
+    </p>
+  </voice>
+</speak>
+<!-- datum_mehrere_saetze.ssml -->

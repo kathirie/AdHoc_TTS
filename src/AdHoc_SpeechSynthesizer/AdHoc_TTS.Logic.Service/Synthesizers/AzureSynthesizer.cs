@@ -19,9 +19,10 @@ public class AzureSynthesizer : ITtsSynthesizer
             throw new ArgumentException("SSML content cannot be empty.", nameof(ssmlContent));
 
         _config.SetSpeechSynthesisOutputFormat(
-            Microsoft.CognitiveServices.Speech.SpeechSynthesisOutputFormat.Riff16Khz16BitMonoPcm);
+            SpeechSynthesisOutputFormat.Riff16Khz16BitMonoPcm);
 
-        using var synth = new SpeechSynthesizer(_config);
+        using var synth = new SpeechSynthesizer(_config, null as AudioConfig);
+
         var result = await synth.SpeakSsmlAsync(ssmlContent).ConfigureAwait(false);
 
         if (result.Reason == ResultReason.SynthesizingAudioCompleted)

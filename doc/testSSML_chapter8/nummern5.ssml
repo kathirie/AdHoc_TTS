@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Der Regionalzug 101 fährt von Gleis 3 ab.</s>
+      <s>Der Regionalzug einhunderteins fährt von Gleis drei ab.</s>
+
+      <s>Der Bus 245 fährt weiter bis zur Endstation.</s>
+      <s>Der Bus zweihundertfünfundvierzig fährt weiter bis zur Endstation.</s>
+
+      <s>Der Zug 320 hält heute an allen Stationen.</s>
+      <s>Der Zug dreihundertzwanzig hält heute an allen Stationen.</s>
+    </p>
+  </voice>
+</speak>
+<!-- nummern_dreistellig -->

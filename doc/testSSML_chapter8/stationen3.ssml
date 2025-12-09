@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+
+      <!-- 1: Umlaute – Block 1 -->
+      <s>Erster Block: Umlaute, einfache Haltestellennamen, Teil eins.</s>
+      <break time="800ms"/>
+      <s>Dieser Bus fährt über Bad Vöslau Mühlgasse, Gänserndorf Bahnhof, Großhöflein Eisenstädter Straße und Mörbisch am See Hauptstraße.</s>
+      <break time="1200ms"/>
+
+      <!-- 2: Umlaute – Block 2 -->
+      <s>Zweiter Block: Umlaute, einfache Haltestellennamen, Teil zwei.</s>
+      <break time="800ms"/>
+      <s>Die Linie verbindet Ödlitz Kirche, Kleinhöflein Wiener Straße, Schützen am Gebirge Ruster Straße und Trausdorf an der Wulka Mühlweg.</s>
+      <break time="1200ms"/>
+
+      <!-- 3: XYZ – Block 3 -->
+      <s>Dritter Block: Buchstaben X, Y und Z, klassische Haltestellennamen.</s>
+      <break time="800ms"/>
+      <s>Die nächste Fahrt führt über Laxenburg Wiener Straße, weiter nach Zwölfaxing Ortsmitte, dann nach Graz Jakominiplatz und schließlich nach Laxenburg Franz Joseph Platz.</s>
+      <break time="1200ms"/>
+
+      <!-- 4: XYZ – Block 4 -->
+      <s>Vierter Block: Buchstaben X, Y und Z, zusätzliche Beispiele.</s>
+      <break time="800ms"/>
+      <s>Der Regionalbus bedient die Stationen Zwölfaxing Brunnengasse, Zwölfaxing Josef Weiß Gasse, Rannersdorf Baiergasse und Weigelsdorf Judenweg.</s>
+      <break time="1200ms"/>
+
+      <!-- 5: CH – Block 5 -->
+      <s>Fünfter Block: CH-Laut, einfache Kombinationen.</s>
+      <break time="800ms"/>
+      <s>Die Linie fährt von Deutsch Haslau Obere Hauptstraße über Deutsch Haslau Untere Hauptstraße weiter nach Deutsch Jahrndorf Kirche und endet bei Deutsch Jahrndorf Mühlstraße.</s>
+      <break time="1200ms"/>
+
+      <!-- 6: CH – Block 6 -->
+      <s>Sechster Block: CH-Laut, kombiniert mit längeren Namen.</s>
+      <break time="800ms"/>
+      <s>Der Bus verbindet Deutsch Jahrndorf Obere Hauptstraße mit Kirchschlag in der Buckligen Welt Pinz sowie Weissenbach an der Triesting Further Straße und Weissenbach an der Triesting Kirchenplatz.</s>
+      <break time="1200ms"/>
+
+      <!-- 7: Sonderzeichen – Block 7 -->
+      <s>Siebenter Block: Sonderzeichen, Bindestrich und Schrägstrich, einfache Beispiele.</s>
+      <break time="800ms"/>
+      <s>Diese Linie fährt über Biedermannsdorf Siegfried Marcus Straße, IZ NÖ Süd Straße 1 Mitte, Enzersdorf an der Fischa Kellergasse und Rust am Neusiedler See Franz Joseph Platz.</s>
+      <break time="1200ms"/>
+
+      <!-- 8: Sonderzeichen – Block 8 -->
+      <s>Achter Block: Sonderzeichen kombiniert mit Umlauten und Regionen.</s>
+      <break time="800ms"/>
+      <s>Der Bus verkehrt zwischen Trausdorf an der Wulka Bachgasse, St Georgen an der Leitha Hauptstraße, Langeck im Burgenland Ortszufahrt und Rust am Neusiedler See Heidegasse.</s>
+      <break time="1200ms"/>
+
+      <!-- 9: Lange Namen – Block 9 -->
+      <s>Neunter Block: lange Haltestellennamen, Verwaltungs und Siedlungsbezug, Teil eins.</s>
+      <break time="800ms"/>
+      <s>Die Linie beginnt bei Neusiedl am See Bezirkshauptmannschaft, führt weiter zur Siedlung Maria Theresia Schedlerstraße, dann nach Trausdorf an der Wulka Feriensiedlung und endet in Wien Rustenfeld Siedlung.</s>
+      <break time="1200ms"/>
+
+      <!-- 10: Lange Namen – Block 10 -->
+      <s>Zehnter Block: lange Haltestellennamen, mit Zahlen und mehreren Wörtern, Teil zwei.</s>
+      <break time="800ms"/>
+      <s>Der Regionalbus bedient Brunn am Gebirge Industriestraße B West, Markgrafneusiedl Altes Dorf 29 68, das Parndorf Pado Shopping Galerie und Maria Enzersdorf Franz Josef Straße.</s>
+      <break time="1200ms"/>
+
+      <!-- 11: Einfache Ortsnamen – Block 11 -->
+      <s>Elfter Block: einfache Ortsnamen, kurze Referenzgruppe, Teil eins.</s>
+      <break time="800ms"/>
+      <s>Die nächste Regionalverbindung führt von Achau Bahnhof über Achau Friedhof und Andlersdorf Ortsmitte bis nach Engelhartstetten Gemeindeamt.</s>
+      <break time="1200ms"/>
+
+      <!-- 12: Einfache Ortsnamen – Block 12 -->
+      <s>Zwölfter Block: einfache Ortsnamen, mittlere Länge, Teil zwei.</s>
+      <break time="800ms"/>
+      <s>Der Bus fährt von Felixdorf Bahnhof weiter nach Guntramsdorf Lokalbahn anschließend nach Moosbrunn Kirche und schließlich nach Walbersdorf Hauptstraße.</s>
+      <break time="1200ms"/>
+
+      <!-- 13: Einfache Ortsnamen – Block 13 -->
+      <s>Dreizehnter Block: einfache Ortsnamen, Bahnhöfe und Kirchen, Teil drei.</s>
+      <break time="800ms"/>
+      <s>Die Zugverbindung umfasst Parndorf Bahnhof, Zurndorf Bahnhof, Jennersdorf Bahnhof und als letzte Station Gols Kirche.</s>
+      <break time="1200ms"/>
+
+    </p>
+  </voice>
+</speak>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xml:lang="de-AT">
+  <voice name="de-AT-IngridNeural">
+    <p>
+      <s>Aktuelle Informationen finden Sie auf www.oebb.at und auf www.wienerlinien.at.</s>
+      <s>Aktuelle Informationen finden Sie auf w w w Punkt o e b b Punkt at und auf w w w Punkt wienerlinien Punkt at.</s>
+    </p>
+  </voice>
+</speak>
+<!-- websites_mehrere -->
